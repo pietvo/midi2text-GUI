@@ -35,7 +35,8 @@ type
 						CheckBoxOptionV: TCheckBox;
 						CheckBoxOptionF: TCheckBox;
 						CheckBoxOptionR: TCheckBox;
-						EditFoldPos: TEdit;
+						Edit1: TEdit;
+						FPosWarningBox: TLabel;
 						Image1: TImage;
 						Image2: TImage;
 						Label1: TLabel;
@@ -80,6 +81,7 @@ type
 						StatusBar1: TStatusBar;
 						procedure ButtonConvert1Click(Sender: TObject);
             procedure ButtonConvert2Click(Sender: TObject);
+						procedure FoldPosCheck(Sender: TObject);
 						procedure Page1BeforeShow(ASender: TObject; ANewPage: TPage;
 									ANewIndex: Integer);
 						procedure Page2BeforeShow(ASender: TObject; ANewPage: TPage;
@@ -113,6 +115,7 @@ var
       TextFile: string;
       TextStdInOut: Boolean;
       FPosValid: Boolean = True;
+      FoldPos: string = '80';
 
 
 implementation
@@ -187,6 +190,19 @@ begin
 		Sleep(10);
 end;
 
+
+procedure FPosWarning;
+begin
+  if FPosValid then
+    Form1.FPosWarningBox.Visible := False
+  else
+    begin
+      Form1.FPosWarningBox.Caption := 'Position must be a number between 10 and 9999!';
+      Form1.FPosWarningBox.Visible := True;
+		end;
+end;
+
+
 procedure TForm1.ButtonConvert1Click(Sender: TObject);
 const
   EXEC_PATH = '/Users/pieter/bin/'; // Temporary !!!
@@ -222,8 +238,13 @@ begin
       proc.Parameters.Add('-v');
     if CheckBoxOptionF.Checked then
     begin
+      if not FPosValid then
+      begin
+        FPosWarning;
+        Exit;
+      end;
       proc.Parameters.Add('-f');
-      proc.Parameters.Add(EditFoldPos.Text);
+      proc.Parameters.Add(FoldPos);
     end;
 
     proc.Parameters.Add(MidiFile);
@@ -441,6 +462,34 @@ begin
 
 end;
 
+
+procedure TForm1.FoldPosCheck(Sender: TObject);
+var
+  LValue: LongInt;
+  LText: string;
+begin
+  LText := Trim(Edit1.Text);
+  Edit1.Text := LText;
+  if LText = '' then
+    LValue := 0
+  else
+   if not TryStrToInt(LText, LValue) then
+     LValue:= 0;
+  if (LValue < 10) or (LValue > 9999) then
+    begin
+      FPosValid := False;
+      Edit1.SetFocus;
+    end
+  else
+    begin
+      FPosValid := True;
+      FoldPos := LText;
+  	end;
+  FPosWarning;
+  CheckMF2TConvert;
+end;
+
+
 procedure TForm1.Page1BeforeShow(ASender: TObject; ANewPage: TPage;
 			ANewIndex: Integer);
 begin
@@ -466,6 +515,7 @@ begin
     Form1.Caption := 'Midi to Text';
 	end;
   Form1.Notebook1.PageIndex := 0;
+  Form1.FPosWarningBox.Visible := False;
 end;
 
 

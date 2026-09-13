@@ -459,14 +459,6 @@ object Form1: TForm1
         Font.Color = clWhite
         ParentFont = False
       end
-      object EditFoldPos: TEdit
-        Left = 202
-        Height = 20
-        Top = 384
-        Width = 28
-        TabOrder = 8
-        Text = '80'
-      end
       object LabelOptions: TLabel
         AnchorSideTop.Side = asrCenter
         Left = 32
@@ -558,6 +550,32 @@ object Form1: TForm1
         Caption = 'Replace Note Off by Note Off with vol=0'
         Font.Color = clWhite
         ParentFont = False
+      end
+      object FPosWarningBox: TLabel
+        Left = 268
+        Height = 32
+        Top = 376
+        Width = 200
+        AutoSize = False
+        Caption = 'Position must be a number between 10 and 9999!'
+        Color = clWhite
+        Font.Color = clRed
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+        Visible = False
+        WordWrap = True
+      end
+      object Edit1: TEdit
+        Left = 202
+        Height = 20
+        Top = 384
+        Width = 38
+        NumbersOnly = True
+        TabOrder = 11
+        Text = '80'
+        OnChange = FoldPosCheck
+        OnExit = FoldPosCheck
       end
     end
     object Page2: TPage
