@@ -14,7 +14,6 @@ type
 
       TForm2 = class(TForm)
 						button_open: TButton;
-						Button2: TButton;
 						button_save: TButton;
 						button_save_as: TButton;
 						Memo1: TMemo;
@@ -41,7 +40,7 @@ Uses MainForm;
 
 procedure TForm2.setText(content: string);
 begin
-  Memo1.TEXT := content;
+  Memo1.Text := content;
   if Assigned(Memo1.OnChange) then
     Memo1.OnChange(Memo1);
 end;

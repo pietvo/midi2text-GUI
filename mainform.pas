@@ -45,6 +45,7 @@ type
 						Label12: TLabel;
 						Label16: TLabel;
 						Label18: TLabel;
+						Label19: TLabel;
 						LabelTextIn: TLabel;
 						LabelOptions: TLabel;
 						Label13: TLabel;

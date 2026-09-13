@@ -30,21 +30,13 @@ object Form2: TForm2
     Caption = 'Open ...'
     TabOrder = 1
   end
-  object Button2: TButton
-    Left = 66
-    Height = 9
-    Top = 7
-    Width = 2
-    Caption = 'Button2'
-    TabOrder = 2
-  end
   object button_save: TButton
     Left = 160
     Height = 25
     Top = 7
     Width = 75
     Caption = 'Save ...'
-    TabOrder = 3
+    TabOrder = 2
   end
   object button_save_as: TButton
     Left = 288
@@ -52,6 +44,6 @@ object Form2: TForm2
     Top = 7
     Width = 75
     Caption = 'Save as ...'
-    TabOrder = 4
+    TabOrder = 3
   end
 end
