@@ -9,7 +9,7 @@ uses
        BaseUnix, // Required for fpClose
       {$ENDIF}
       Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-			DBCtrls, TextBox, Process, LCLType, Math;
+			DBCtrls, TextBox, Process, LCLType, Menus, Math;
 
 type
 
@@ -63,6 +63,15 @@ type
 						Label9: TLabel;
 						LabelTextOut: TLabel;
 						LabelMidiOut: TLabel;
+						MainMenu1: TMainMenu;
+						MenuItem1: TMenuItem;
+						MenuItem2: TMenuItem;
+						MenuItem3: TMenuItem;
+						MenuItem4: TMenuItem;
+						MenuItem5: TMenuItem;
+						MenuItem6: TMenuItem;
+						MenuItem7: TMenuItem;
+						MenuItem8: TMenuItem;
 						Notebook1: TNotebook;
 						OpenDialog1: TOpenDialog;
 						Page1: TPage;

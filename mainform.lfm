@@ -7,6 +7,7 @@ object Form1: TForm1
   ClientHeight = 499
   ClientWidth = 500
   Color = 8025909
+  Menu = MainMenu1
   Position = poScreenCenter
   LCLVersion = '4.99.0.0'
   object Notebook1: TNotebook
@@ -1018,5 +1019,33 @@ object Form1: TForm1
   object SaveDialog1: TSaveDialog
     Left = 416
     Top = 16
+  end
+  object MainMenu1: TMainMenu
+    Left = 51
+    Top = 12
+    object MenuItem1: TMenuItem
+      Caption = 'File'
+      object MenuItem2: TMenuItem
+        Caption = 'Select Input Text File'
+      end
+      object MenuItem3: TMenuItem
+        Caption = 'Select Output Midi File'
+      end
+      object MenuItem4: TMenuItem
+        Caption = 'Convert'
+      end
+    end
+    object MenuItem5: TMenuItem
+      Caption = 'Window'
+      object MenuItem6: TMenuItem
+        Caption = 'Switch to Text ➜ Midi'
+      end
+      object MenuItem7: TMenuItem
+        Caption = 'Switch to Midi ➜ Text'
+      end
+    end
+    object MenuItem8: TMenuItem
+      Caption = 'Help'
+    end
   end
 end

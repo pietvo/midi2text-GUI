@@ -5,10 +5,8 @@ unit TextBox;
 interface
 
 uses
-      Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, SynEdit;
-
-//type
- // TNotifyEvent = procedure(Sender: TObject) of object;
+      Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,
+			SynEdit;
 
 type
 
