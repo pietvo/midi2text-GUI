@@ -1,0 +1,57 @@
+object Form2: TForm2
+  Left = 311
+  Height = 514
+  Top = 1110
+  Width = 400
+  Caption = 'TextBox'
+  ClientHeight = 514
+  ClientWidth = 400
+  LCLVersion = '4.99.0.0'
+  OnCreate = FormCreate
+  object Memo1: TMemo
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideBottom.Side = asrBottom
+    Left = 0
+    Height = 494
+    Top = 40
+    Width = 400
+    Align = alCustom
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Top = 40
+    BorderSpacing.Bottom = 22
+    ScrollBars = ssAutoVertical
+    TabOrder = 0
+  end
+  object button_open: TButton
+    Left = 32
+    Height = 25
+    Top = 7
+    Width = 75
+    Caption = 'Open ...'
+    TabOrder = 1
+  end
+  object Button2: TButton
+    Left = 66
+    Height = 9
+    Top = 7
+    Width = 2
+    Caption = 'Button2'
+    TabOrder = 2
+  end
+  object button_save: TButton
+    Left = 160
+    Height = 25
+    Top = 7
+    Width = 75
+    Caption = 'Save ...'
+    TabOrder = 3
+  end
+  object button_save_as: TButton
+    Left = 288
+    Height = 25
+    Top = 7
+    Width = 75
+    Caption = 'Save as ...'
+    TabOrder = 4
+  end
+end
