@@ -1009,6 +1009,23 @@ object Form1: TForm1
       end
     end
   end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Height = 20
+    Top = 479
+    Width = 500
+    AutoSize = False
+    Font.Height = -24
+    Font.Style = [fsBold]
+    Panels = <    
+      item
+        Alignment = taCenter
+        Width = 200
+      end>
+    ParentFont = False
+    SimpleText = 'Test'
+    SimplePanel = False
+  end
   object OpenDialog1: TOpenDialog
     Title = 'Select Midi File'
     Filter = 'Midi files|*.mid; *.midi|All files|*.*'

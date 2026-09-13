@@ -9,7 +9,7 @@ uses
        BaseUnix, // Required for fpClose
       {$ENDIF}
       Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-			DBCtrls, TextBox, Process, LCLType, Menus, Math;
+			DBCtrls, TextBox, Process, LCLType, Menus, ComCtrls, Math;
 
 type
 
@@ -77,6 +77,7 @@ type
 						Page1: TPage;
 						Page2: TPage;
 						SaveDialog1: TSaveDialog;
+						StatusBar1: TStatusBar;
 						procedure ButtonConvert1Click(Sender: TObject);
             procedure ButtonConvert2Click(Sender: TObject);
 						procedure Page1BeforeShow(ASender: TObject; ANewPage: TPage;
@@ -119,6 +120,18 @@ implementation
 {$R *.lfm}
 
 { TForm1 }
+
+
+procedure SetStatus(msg: string);
+begin
+  Form1.StatusBar1.Panels[0].Text := msg;
+end;
+
+
+procedure ClearStatus;
+begin
+  SetStatus('');
+end;
 
 procedure CheckMF2TConvert;
 begin
@@ -190,6 +203,7 @@ var
   ErrorText: string;
 
 begin
+  ClearStatus;
   try
     proc := TProcess.Create(nil);
 
@@ -248,6 +262,7 @@ begin
           Application.MessageBox(PChar(ErrorText), 'Midi to Text',MB_ICONEXCLAMATION);
         Free;
       end;
+    SetStatus('Conversion complete.');
 
   finally
       StdoutStream.Free;
@@ -259,6 +274,7 @@ end;
 
 procedure TForm1.SelectMidiInFile(Sender: TObject);
 begin
+  ClearStatus;
   OpenDialog1.Filter :=
       'Midi files (*.mid; *.midi)|*.mid; *.midi|All Files (*.*)|*.*';
   if OpenDialog1.Execute then
@@ -275,6 +291,7 @@ end;
 procedure TForm1.SelectTextOutFile(Sender: TObject);
 var filename: string;
 begin
+  ClearStatus;
   SaveDialog1.Filter :=
       'Text Files (*.txt; *.text)|*.txt; *.text|All Files (*.*)|*.*';
   if SaveDialog1.Execute then
@@ -290,6 +307,7 @@ end;
 
 procedure TForm1.ButtonTextboxOutClick(Sender: TObject);
 begin
+  ClearStatus;
   LabelTextOut.Caption := 'TextBox...';
   TextStdInOut := True;
   Form2.CallBackProc := @CheckT2MFConvert;
@@ -301,6 +319,7 @@ end;
 
 procedure TForm1.SelectTextInFile(Sender: TObject);
 begin
+  ClearStatus;
   OpenDialog1.Filter :=
       'Text Files (*.txt; *.text)|*.txt; *.text|All Files (*.*)|*.*';
   if OpenDialog1.Execute then
@@ -317,6 +336,7 @@ end;
 
 procedure TForm1.SelectMidiOutFile(Sender: TObject);
 begin
+  ClearStatus;
   SaveDialog1.Filter :=
       'Midi files (*.mid; *.midi)|*.mid; *.midi|All Files (*.*)|*.*';
   if SaveDialog1.Execute then
@@ -331,6 +351,7 @@ end;
 
 procedure TForm1.ButtonTextboxInClick(Sender: TObject);
 begin
+  ClearStatus;
   LabelTextIn.Caption := 'TextBox...';
   TextStdInOut := True;
   Form2.CallBackProc := @CheckT2MFConvert;
@@ -358,6 +379,7 @@ var
   BytesWritten: Integer;
 
 begin
+  ClearStatus;
   try
     proc := TProcess.Create(nil);
 
@@ -410,6 +432,7 @@ begin
           Application.MessageBox(PChar(ErrorText), 'Midi to Text',MB_ICONEXCLAMATION);
         Free;
       end;
+    SetStatus('Conversion complete.');
 
   finally
       StdoutStream.Free;
