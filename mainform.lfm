@@ -325,7 +325,7 @@ object Form1: TForm1
         BorderSpacing.Right = 10
         Caption = 'Select Text Output File'
         TabOrder = 1
-        OnClick = SelectMidiOutFile
+        OnClick = SelectTextOutFile
       end
       object Label4: TLabel
         AnchorSideLeft.Control = ButtonMidiIn
