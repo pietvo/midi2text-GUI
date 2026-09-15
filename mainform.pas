@@ -158,7 +158,7 @@ end;
 
 { Start MF2T conversion }
 
-procedure ProcessStdoutStderr(proc: TProcess; StdoutStream, StderrStream: TMemoryStream);
+procedure ProcessOutput(proc: TProcess; StdoutStream, StderrStream: TMemoryStream);
 const
   BUF_SIZE = 2048; // Buffer size for reading the output in chunks
 var
@@ -259,7 +259,7 @@ begin
 
     StdoutStream := TMemoryStream.Create;
     StderrStream := TMemoryStream.Create;
-    ProcessStdoutStderr(proc, StdoutStream, StderrStream);
+    ProcessOutput(proc, StdoutStream, StderrStream);
 
     // Process Stdout in case of TextBox
     if TextStdInOut then
@@ -441,7 +441,7 @@ begin
     //bwait := proc.WaitOnExit;
 
 		StdoutStream := TMemoryStream.Create;
-    ProcessStdoutStderr(proc, StdoutStream, nil);
+    ProcessOutput(proc, StdoutStream, nil);
 
     // Process Stderr/Stdout
     StdoutStream.Position := 0;
