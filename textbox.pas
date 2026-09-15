@@ -15,6 +15,7 @@ type
 						button_open: TButton;
 						button_save: TButton;
 						button_save_as: TButton;
+						MemoLabel: TLabel;
 						Memo1: TMemo;
             procedure FormCreate(Sender: TObject);
             procedure Memo1Change(Sender: TObject);
@@ -28,6 +29,8 @@ type
            procedure setText(content: string);
       end;
 
+const
+    MemoTop = 40; // default position of Memo in Form2
 var
       Form2: TForm2;
 
@@ -51,23 +54,36 @@ var
   line: string;
   validMidi: Boolean;
 begin
+  validMidi := False;
   for i:=0 to Form2.Memo1.Lines.Count-1 do
-       begin
-         line := Trim(Form2.Memo1.Lines[i]);
-         // Skip blank lines; check first non-blank line
-         if line <> '' then
-           begin
-             if copy(line, 1, 6) = 'MFile ' then
-               begin
-                  Form2.validMidiText := True;
-                  Form2.CallBackProc;
-							 end
-             else
-               Form2.validMidiText := False;
-             Exit;
-					 end;
-			 end;
-  Form2.validMidiText := False;
+	  begin
+		 line := Trim(Form2.Memo1.Lines[i]);
+		   // Skip blank lines; check first non-blank line
+		   if line <> '' then
+		   begin
+		     validMidi := copy(line, 1, 6) = 'MFile ';
+		     Break;
+		   end
+		end;
+    Form2.validMidiText := validMidi;
+    if validMidi then
+    begin
+      CallBackProc;
+      MemoLabel.Caption := '';
+      MemoLabel.Visible := False;
+      MemoLabel.Height := 0;
+      Memo1.Top := MemoTop;
+		end
+    else
+    begin
+      if MemoLabel.Caption = '' then
+      MemoLabel.Caption := '⚠️  Please enter valid MFile line';
+      MemoLabel.Visible := True;
+      MemoLabel.Height := 20;
+      MemoLabel.Top := MemoTop;
+      Memo1.Top := MemoTop + MemoLabel.Height;
+      // MemoLabel.BringToFront();
+		end;
 end;
 
 

@@ -378,6 +378,8 @@ begin
   TextStdInOut := True;
   Form2.CallBackProc := @CheckT2MFConvert;
   Form2.Show;
+  { trick to check if valid content in TextBox }
+  Form2.Memo1.OnChange(Form2.Memo1);
   CheckT2MFConvert;
 end;
 
