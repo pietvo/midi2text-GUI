@@ -5,8 +5,7 @@ unit TextBox;
 interface
 
 uses
-      Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,
-			SynEdit;
+      Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus;
 
 type
 
