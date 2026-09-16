@@ -66,14 +66,19 @@ type
 						LabelTextOut: TLabel;
 						LabelMidiOut: TLabel;
 						MainMenu1: TMainMenu;
-						MenuItem1: TMenuItem;
-						MenuItem2: TMenuItem;
-						MenuItem3: TMenuItem;
-						MenuItem4: TMenuItem;
-						MenuItem5: TMenuItem;
-						MenuItem6: TMenuItem;
-						MenuItem7: TMenuItem;
-						MenuItem8: TMenuItem;
+						MenuFile: TMenuItem;
+						MenuShowTextBox: TMenuItem;
+						MenuHideTextBox: TMenuItem;
+						Separator2: TMenuItem;
+						Separator1: TMenuItem;
+						MenuItemTextBox: TMenuItem;
+						MenuItemOpen: TMenuItem;
+						MenuItemSaveAs: TMenuItem;
+						MenuItemConvert: TMenuItem;
+						MenuWindow: TMenuItem;
+						MenuItemTextToMidi: TMenuItem;
+						MenuItemMidiToText: TMenuItem;
+						MenuHelp: TMenuItem;
 						Notebook1: TNotebook;
 						OpenDialog1: TOpenDialog;
 						Page1: TPage;
@@ -83,6 +88,12 @@ type
 						procedure ButtonConvert1Click(Sender: TObject);
             procedure ButtonConvert2Click(Sender: TObject);
 						procedure FoldPosCheck(Sender: TObject);
+						procedure MenuHideTextBoxClick(Sender: TObject);
+						procedure MenuItemTextBoxClick(Sender: TObject);
+						procedure MenuItemConvertClick(Sender: TObject);
+						procedure MenuItemOpenClick(Sender: TObject);
+						procedure MenuItemSaveAsClick(Sender: TObject);
+						procedure MenuItemTexttoMidiClick(Sender: TObject);
 						procedure Page1BeforeShow(ASender: TObject; ANewPage: TPage;
 									ANewIndex: Integer);
 						procedure Page2BeforeShow(ASender: TObject; ANewPage: TPage;
@@ -91,6 +102,7 @@ type
 						procedure SelectMidiOutFile(Sender: TObject);
 						procedure ButtonTextBoxInClick(Sender: TObject);
             procedure ButtonTextBoxOutClick(Sender: TObject);
+						procedure ShowTextBox(Sender: TObject);
             procedure SwitchPage1(Sender: TObject);
 						procedure SwitchPage2(Sender: TObject);
             procedure FormCreate(Sender: TObject);
@@ -111,6 +123,7 @@ var
       TextStdInOut: Boolean;
       FPosValid: Boolean = True;
       FoldPos: string = '80';
+      TextToMidi: Boolean = False;
 
 
 implementation
@@ -134,9 +147,15 @@ end;
 procedure CheckMF2TConvert;
 begin
   if (MidiFile <> '') and ((TextFile <> '') or TextStdInOut) and FPosValid then
-    Form1.ButtonConvert1.Enabled := True
-  else
-    Form1.ButtonConvert1.Enabled := False
+  begin
+    Form1.ButtonConvert1.Enabled := True;
+    Form1.MenuItemConvert.Enabled := True
+	end
+	else
+  begin
+    Form1.ButtonConvert1.Enabled := False;
+    Form1.MenuItemConvert.Enabled := False
+	end;
 end;
 
 
@@ -144,9 +163,15 @@ procedure CheckT2MFConvert;
 begin
   if (MidiFile <> '') and ((TextFile <> '') or
                           (TextStdInOut and Form2.validMidiText)) then
-    Form1.ButtonConvert2.Enabled := True
-  else
-    Form1.ButtonConvert2.Enabled := False
+  begin
+    Form1.ButtonConvert2.Enabled := True;
+    Form1.MenuItemConvert.Enabled := True
+	end
+	else
+  begin
+    Form1.ButtonConvert2.Enabled := False;
+    Form1.MenuItemConvert.Enabled := False
+	end;
 end;
 
 
@@ -315,6 +340,7 @@ begin
     TextFile := SaveDialog1.Filename;
     LabelTextOut.Caption := TextFile;
     TextStdInOut := False;
+    MenuItemTextBox.checked := False;
     CheckMF2TConvert;
   	//ShowMessage('File selected: ' + filename);
   end
@@ -326,8 +352,14 @@ begin
   ClearStatus;
   LabelTextOut.Caption := 'TextBox...';
   TextStdInOut := True;
+  MenuItemTextBox.checked := True;
   Form2.CallBackProc := @CheckT2MFConvert;
   CheckMF2TConvert;
+end;
+
+procedure TForm1.ShowTextBox(Sender: TObject);
+begin
+  Form2.Show;
 end;
 
 
@@ -344,6 +376,7 @@ begin
     LabelTextIn.Caption := TextFile;
   //  MidiIn := True;
     TextStdInOut := False;
+    MenuItemTextBox.checked := False;
     CheckT2MFConvert;
   	//ShowMessage('File selected: ' + filename);
   end
@@ -370,6 +403,7 @@ begin
   ClearStatus;
   LabelTextIn.Caption := 'TextBox...';
   TextStdInOut := True;
+  MenuItemTextBox.checked := True;
   Form2.CallBackProc := @CheckT2MFConvert;
   Form2.Show;
   { trick to check if valid content in TextBox }
@@ -486,6 +520,57 @@ begin
   CheckMF2TConvert;
 end;
 
+procedure TForm1.MenuHideTextBoxClick(Sender: TObject);
+begin
+  Form2.Hide;
+end;
+
+
+procedure TForm1.MenuItemTextBoxClick(Sender: TObject);
+begin
+  MenuItemTextBox.checked := not MenuItemTextBox.checked;
+  if MenuItemTextBox.checked then
+    if TextToMidi then
+      ButtonTextBoxInClick(Sender)
+    else
+      ButtonTextBoxOutClick(Sender)
+end;
+
+
+procedure TForm1.MenuItemConvertClick(Sender: TObject);
+begin
+      { It is supposed that this can only be clicked
+      if all the parameters are ready }
+  If TextToMidi then
+    ButtonConvert2Click(Sender)    { Text to Midi }
+  else
+    ButtonConvert1Click(Sender)     { Midi to Text }
+end;
+
+
+procedure TForm1.MenuItemOpenClick(Sender: TObject);
+begin
+      if TextToMidi then
+        SelectTextInFile(Sender)
+      else
+        SelectMidiInfile(Sender)
+end;
+
+
+procedure TForm1.MenuItemSaveAsClick(Sender: TObject);
+begin
+      if TextToMidi then
+        SelectMidiOutFile(Sender)
+      else
+        SelectTextOutFile(Sender)
+end;
+
+
+procedure TForm1.MenuItemTexttoMidiClick(Sender: TObject);
+begin
+
+end;
+
 
 procedure TForm1.Page1BeforeShow(ASender: TObject; ANewPage: TPage;
 			ANewIndex: Integer);
@@ -511,9 +596,16 @@ begin
     FPosValid := True;
     Form1.ButtonConvert1.Enabled := False;
     Form1.Caption := 'Midi to Text';
+    Form1.MenuItemMidiToText.Enabled := False;
+    Form1.MenuItemTextToMidi.Enabled := True;
+    Form1.MenuItemOpen.Caption := 'Select Input Midi File';
+    Form1.MenuItemSaveAs.Caption := 'Select Output Text File';
+    Form1.MenuItemTextBox.Caption := 'Output To TextBox';
+    Form1.MenuItemTextBox.checked := False;
 	end;
   Form1.Notebook1.PageIndex := 0;
   Form1.FPosWarningBox.Visible := False;
+  TextToMidi := False;
   ClearStatus;
 end;
 
@@ -527,9 +619,15 @@ begin
     TextStdInOut := False;
     Form1.ButtonConvert2.Enabled := False;
     Form1.Caption := 'Text to Midi';
-
+    Form1.MenuItemMidiToText.Enabled := True;
+    Form1.MenuItemTextToMidi.Enabled := False;
+    Form1.MenuItemOpen.Caption := 'Select Input Text File';
+    Form1.MenuItemSaveAs.Caption := 'Select Output Midi File';
+    Form1.MenuItemTextBox.Caption := 'Input From TextBox';
+    Form1.MenuItemTextBox.checked := False;
 	end;
   Form1.Notebook1.PageIndex := 1;
+  TextToMidi := True;
   ClearStatus;
 end;
 

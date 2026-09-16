@@ -1055,30 +1055,58 @@ object Form1: TForm1
     Top = 16
   end
   object MainMenu1: TMainMenu
-    Left = 51
-    Top = 12
-    object MenuItem1: TMenuItem
+    Left = 48
+    Top = 8
+    object MenuFile: TMenuItem
       Caption = 'File'
-      object MenuItem2: TMenuItem
-        Caption = 'Select Input Text File'
+      object MenuItemOpen: TMenuItem
+        Caption = 'Select Input Midi File'
+        ShortCut = 4175
+        OnClick = MenuItemOpenClick
       end
-      object MenuItem3: TMenuItem
-        Caption = 'Select Output Midi File'
+      object MenuItemSaveAs: TMenuItem
+        Caption = 'Select Output Text File'
+        ShortCut = 4179
+        OnClick = MenuItemSaveAsClick
       end
-      object MenuItem4: TMenuItem
+      object MenuItemTextBox: TMenuItem
+        Caption = 'Output To TextBox'
+        ShortCut = 4180
+        OnClick = MenuItemTextBoxClick
+      end
+      object Separator1: TMenuItem
+        Caption = '-'
+      end
+      object MenuItemConvert: TMenuItem
         Caption = 'Convert'
+        Enabled = False
+        OnClick = MenuItemConvertClick
       end
     end
-    object MenuItem5: TMenuItem
+    object MenuWindow: TMenuItem
       Caption = 'Window'
-      object MenuItem6: TMenuItem
+      object MenuItemTextToMidi: TMenuItem
         Caption = 'Switch to Text ➜ Midi'
+        OnClick = SwitchPage2
       end
-      object MenuItem7: TMenuItem
+      object MenuItemMidiToText: TMenuItem
         Caption = 'Switch to Midi ➜ Text'
+        Enabled = False
+        OnClick = SwitchPage1
+      end
+      object Separator2: TMenuItem
+        Caption = '-'
+      end
+      object MenuShowTextBox: TMenuItem
+        Caption = 'Show TextBox'
+        OnClick = ShowTextBox
+      end
+      object MenuHideTextBox: TMenuItem
+        Caption = 'Hide TextBox'
+        OnClick = MenuHideTextBoxClick
       end
     end
-    object MenuItem8: TMenuItem
+    object MenuHelp: TMenuItem
       Caption = 'Help'
     end
   end
