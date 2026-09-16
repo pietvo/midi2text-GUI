@@ -19,7 +19,7 @@ type
 						ButtonConvert2: TButton;
 						ButtonMidiIn: TButton;
 						ButtonTextInOut: TButton;
-						ButtonTextboxOut: TButton;
+						ButtonTextBoxOut: TButton;
 						ButtonConvert1: TButton;
 						ButtonTextIn: TButton;
 						ButtonMidiOut: TButton;
@@ -89,8 +89,8 @@ type
 									ANewIndex: Integer);
 						procedure SelectMidiInFile(Sender: TObject);
 						procedure SelectMidiOutFile(Sender: TObject);
-						procedure ButtonTextboxInClick(Sender: TObject);
-            procedure ButtonTextboxOutClick(Sender: TObject);
+						procedure ButtonTextBoxInClick(Sender: TObject);
+            procedure ButtonTextBoxOutClick(Sender: TObject);
             procedure SwitchPage1(Sender: TObject);
 						procedure SwitchPage2(Sender: TObject);
             procedure FormCreate(Sender: TObject);
@@ -99,12 +99,6 @@ type
             //procedure Memo1Change(Sender: TObject);
 
       private
-      {VAR
-      MidiFile: string;
-      TextFile: string;
-      MidiIn, TextInOut: Boolean;
-      TextStdInOut: Boolean;
-      FPosValid: Boolean;     }
 
       public
 
@@ -327,7 +321,7 @@ begin
 end;
 
 
-procedure TForm1.ButtonTextboxOutClick(Sender: TObject);
+procedure TForm1.ButtonTextBoxOutClick(Sender: TObject);
 begin
   ClearStatus;
   LabelTextOut.Caption := 'TextBox...';
@@ -371,7 +365,7 @@ begin
 end;
 
 
-procedure TForm1.ButtonTextboxInClick(Sender: TObject);
+procedure TForm1.ButtonTextBoxInClick(Sender: TObject);
 begin
   ClearStatus;
   LabelTextIn.Caption := 'TextBox...';
@@ -499,6 +493,7 @@ begin
 
 end;
 
+
 procedure TForm1.Page2BeforeShow(ASender: TObject; ANewPage: TPage;
 			ANewIndex: Integer);
 begin
@@ -506,7 +501,7 @@ begin
 end;
 
 
-procedure LoadPage1;
+procedure LoadPage1;   { Midi To Text }
 begin
   if Form1.Notebook1.PageIndex <> 0 then
   begin
@@ -523,7 +518,7 @@ begin
 end;
 
 
-procedure LoadPage2;
+procedure LoadPage2;   { Text To Midi }
 begin
   if Form1.Notebook1.PageIndex <> 1 then
   begin
@@ -539,12 +534,10 @@ begin
 end;
 
 
-
 procedure TForm1.SwitchPage1(Sender: TObject);
 begin
   LoadPage1;
 end;
-
 
 
 procedure TForm1.SwitchPage2(Sender: TObject);
