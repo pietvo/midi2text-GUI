@@ -519,6 +519,7 @@ begin
 	end;
   Form1.Notebook1.PageIndex := 0;
   Form1.FPosWarningBox.Visible := False;
+  ClearStatus;
 end;
 
 
@@ -534,6 +535,7 @@ begin
 
 	end;
   Form1.Notebook1.PageIndex := 1;
+  ClearStatus;
 end;
 
 
