@@ -284,14 +284,9 @@ begin
     if TextStdInOut then
     begin
       StdoutStream.Position := 0;
-      with TStringList.Create do
-        begin
-          LoadFromStream(StdoutStream);
-          Form2.setText(Text);  //assign text content
-          Form2.Show;
-          Free;
-        end;
-  		end;
+      Form2.setText(StdoutStream);  //assign text content
+      Form2.Show;
+    end;
     // Process Stderr
     StderrStream.Position := 0;
     with TStringList.Create do

@@ -6,6 +6,7 @@ object Form2: TForm2
   Caption = 'TextBox'
   ClientHeight = 514
   ClientWidth = 400
+  Menu = MainMenu2
   LCLVersion = '4.99.0.0'
   OnCreate = FormCreate
   object Memo1: TMemo
@@ -21,29 +22,32 @@ object Form2: TForm2
     ScrollBars = ssAutoVertical
     TabOrder = 0
   end
-  object button_open: TButton
+  object Button2Open: TButton
     Left = 32
     Height = 25
     Top = 7
     Width = 75
     Caption = 'Open ...'
     TabOrder = 1
+    OnClick = OpenClick
   end
-  object button_save: TButton
+  object Button2Save: TButton
     Left = 160
     Height = 25
     Top = 7
     Width = 75
     Caption = 'Save ...'
     TabOrder = 2
+    OnClick = SaveClick
   end
-  object button_save_as: TButton
+  object Button2SaveAs: TButton
     Left = 288
     Height = 25
     Top = 7
     Width = 75
     Caption = 'Save as ...'
     TabOrder = 3
+    OnClick = SaveAsClick
   end
   object MemoLabel: TLabel
     AnchorSideTop.Side = asrBottom
@@ -60,5 +64,50 @@ object Form2: TForm2
     Font.Color = clRed
     ParentFont = False
     Visible = False
+  end
+  object MainMenu2: TMainMenu
+    Left = 26
+    Top = 54
+    object Menu2File: TMenuItem
+      Caption = 'File'
+      object Menu2Open: TMenuItem
+        Caption = 'Open'
+        ShortCut = 4175
+        OnClick = OpenClick
+      end
+      object Menu2Save: TMenuItem
+        Caption = 'Save'
+        ShortCut = 4179
+        OnClick = SaveClick
+      end
+      object Menu2SaveAs: TMenuItem
+        Caption = 'Save As...'
+        ShortCut = 12371
+        OnClick = SaveAsClick
+      end
+    end
+    object Menu2Edit: TMenuItem
+      Caption = 'Edit'
+      object Menu2Copy: TMenuItem
+        Caption = 'Copy'
+        ShortCut = 4163
+      end
+      object Menu2Cut: TMenuItem
+        Caption = 'Cut'
+        ShortCut = 4184
+      end
+      object Menu2Paste: TMenuItem
+        Caption = 'Paste'
+        ShortCut = 16470
+      end
+    end
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 96
+    Top = 54
+  end
+  object SaveDialog1: TSaveDialog
+    Left = 152
+    Top = 54
   end
 end
