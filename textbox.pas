@@ -6,7 +6,7 @@ interface
 
 uses
       Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,
-			SynEdit;
+			SynEdit, SynEditKeyCmds, LCLType;
 
 type
 
@@ -138,13 +138,72 @@ end;
 
 
 procedure TForm2.FormCreate(Sender: TObject);
+{$IFDEF DARWIN}
+var
+  i: Integer;
+  procedure AddKey(const ACmd: TSynEditorCommand; const AKey: word; const AShift: TShiftState);
+  begin
+    SynEdit1.AddKey(ACmd, AKey, AShift, VK_UNKNOWN, []);
+  end;
+{$ENDIF}
 begin
   SynEdit1.Highlighter := nil;
 
   // Define the OnChange handler of SynEdit1
   SynEdit1.OnChange := @SynEdit1Change;
   ClearFileName;
+
+  // Redefine Keys for MacOS
+
+  {$IFDEF DARWIN}
+    // Macos Specific Keyboard Mapping for text editing
+    with SynEdit1.Keystrokes do
+    begin
+      // Count backwards because we have a Delete
+      for i := Count - 1 downto 0 do
+        with Items[i] do
+        begin
+          // Change various Crtl-letter to Cmd-letter
+          if (Key in [VK_A, VK_F, VK_C, VK_X, VK_V, VK_Z]) and (ssCtrl in Shift) then
+             Shift := Shift - [ssCtrl] + [ssMeta];
+          // Remove undesired Ctrl+arrow shortcuts
+          // these could conflict with MacOS keys
+          // Also remove Ctrl-N because we need it below
+         if ((Key in [VK_N, VK_LEFT, VK_RIGHT, VK_UP, VK_DOWN]) and (ssCtrl in Shift))
+         // Remove column select mode
+            or (Command in [ecNormalSelect, ecColumnSelect, ecLineSelect]) then
+            Delete(i);
+        end;
+      // Add native macOS Cmd (ssMeta) and Option (ssAlt) keystrokes
+      // Cmd + Arrow (Navigation to begin/end of line or document)
+      AddKey(ecLineStart, VK_LEFT, [ssMeta]); // Cmd + Left
+      AddKey(ecLineStart, VK_A, [ssCtrl]); // Ctrl-A
+      AddKey(ecLineEnd, VK_RIGHT, [ssMeta]); // Cmd + Right
+      AddKey(ecLineEnd, VK_E, [ssCtrl]); // Ctrl-E
+      AddKey(ecEditorTop, VK_UP, [ssMeta]); // Cmd + Up
+      AddKey(ecEditorBottom, VK_DOWN, [ssMeta]); // Cmd + Down
+      // Cmd + Shift + Arrows (Select to begin/end)
+      AddKey(ecSelLineStart, VK_LEFT, [ssMeta, ssShift]);
+      AddKey(ecSelLineEnd, VK_RIGHT, [ssMeta, ssShift]);
+      AddKey(ecSelEditorTop, VK_UP, [ssMeta, ssShift]);
+      AddKey(ecSelEditorBottom, VK_DOWN, [ssMeta, ssShift]);
+      // Option (Alt) + Arrows (jump words)
+      AddKey(ecWordLeft, VK_LEFT, [ssAlt]); // Option + Left
+      AddKey(ecWordRight, VK_RIGHT, [ssAlt]); // Option + Right
+      // Option (Alt) + Shift + Arrows (word select)
+      AddKey(ecSelWordLeft, VK_LEFT, [ssAlt, ssShift]);
+      AddKey(ecSelWordRight, VK_RIGHT, [ssAlt, ssShift]);
+      // misc
+      AddKey(ecDeleteChar, VK_D, [ssCtrl]);  // Ctrl-D
+      AddKey(ecLeft, VK_B, [ssCtrl]);        // Ctrl-B
+      AddKey(ecRight, VK_F, [ssCtrl]);       // Ctrl-F
+      AddKey(ecUp, VK_P, [ssCtrl]);          // Ctrl-P
+      AddKey(ecDown, VK_N, [ssCtrl]);        // Ctrl-N
+      AddKey(ecInsertLine, VK_O, [ssCtrl]);  // Ctrl-O
+    end;
+  {$ENDIF}
 end;
+
 
 procedure TForm2.MenuUndo1Click(Sender: TObject);
 begin
