@@ -108,7 +108,6 @@ type
             procedure FormCreate(Sender: TObject);
 						procedure SelectTextInFile(Sender: TObject);
             procedure SelectTextOutFile(Sender: TObject);
-            //procedure Memo1Change(Sender: TObject);
 
       private
 
@@ -325,7 +324,6 @@ end;
 
 
 procedure TForm1.SelectTextOutFile(Sender: TObject);
-var filename: string;
 begin
   ClearStatus;
   SaveDialog1.Filter :=
@@ -402,7 +400,7 @@ begin
   Form2.CallBackProc := @CheckT2MFConvert;
   Form2.Show;
   { trick to check if valid content in TextBox }
-  Form2.Memo1.OnChange(Form2.Memo1);
+  Form2.SynEdit1.OnChange(Form2.SynEdit1);
   CheckT2MFConvert;
 end;
 
@@ -450,7 +448,7 @@ begin
     if TextStdInOut then
     begin
       // Send TextBox content to stdin
-      InputBytes := TEncoding.UTF8.GetBytes(Form2.Memo1.Text);
+      InputBytes := TEncoding.UTF8.GetBytes(Form2.SynEdit1.Text);
       BytesWritten := proc.Input.Write(InputBytes, Length(InputBytes));
       if BytesWritten <> Length(InputBytes) then
         ShowMessage('Write failed');

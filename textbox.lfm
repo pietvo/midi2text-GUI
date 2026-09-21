@@ -9,26 +9,13 @@ object Form2: TForm2
   Menu = MainMenu2
   LCLVersion = '4.99.0.0'
   OnCreate = FormCreate
-  object Memo1: TMemo
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideBottom.Side = asrBottom
-    Left = 0
-    Height = 494
-    Top = 40
-    Width = 400
-    Align = alCustom
-    Anchors = [akTop, akLeft, akRight, akBottom]
-    BorderSpacing.Top = 40
-    ScrollBars = ssAutoVertical
-    TabOrder = 0
-  end
   object Button2Open: TButton
     Left = 32
     Height = 25
     Top = 7
     Width = 75
     Caption = 'Open ...'
-    TabOrder = 1
+    TabOrder = 0
     OnClick = OpenClick
   end
   object Button2Save: TButton
@@ -37,7 +24,7 @@ object Form2: TForm2
     Top = 7
     Width = 75
     Caption = 'Save ...'
-    TabOrder = 2
+    TabOrder = 1
     OnClick = SaveClick
   end
   object Button2SaveAs: TButton
@@ -46,7 +33,7 @@ object Form2: TForm2
     Top = 7
     Width = 75
     Caption = 'Save as ...'
-    TabOrder = 3
+    TabOrder = 2
     OnClick = SaveAsClick
   end
   object MemoLabel: TLabel
@@ -64,6 +51,29 @@ object Form2: TForm2
     Font.Color = clRed
     ParentFont = False
     Visible = False
+  end
+  inline SynEdit1: TSynEdit
+    AnchorSideRight.Side = asrBottom
+    Left = 0
+    Height = 476
+    Top = 40
+    Width = 400
+    BorderSpacing.Top = 40
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    PopupMenu = PopupMenu1
+    TabOrder = 3
+    Gutter.AutoSize = False
+    Gutter.Width = 2
+    Lines.Strings = (
+      ''
+    )
+    Options = [eoAutoIndent, eoBracketHighlight, eoGroupUndo, eoSmartTabs, eoTabsToSpaces, eoTrimTrailingSpaces]
+    ScrollBars = ssAutoBoth
+    inline SynLeftGutterPartList1: TSynGutterPartList
+      object SynGutterCodeFolding1: TSynGutterCodeFolding
+        Visible = False
+      end
+    end
   end
   object MainMenu2: TMainMenu
     Left = 26
@@ -109,5 +119,32 @@ object Form2: TForm2
   object SaveDialog1: TSaveDialog
     Left = 152
     Top = 54
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 230
+    Top = 54
+    object MenuUndo1: TMenuItem
+      Caption = 'Undo'
+      OnClick = MenuUndo1Click
+    end
+    object MenuRedo1: TMenuItem
+      Caption = 'Redo'
+      OnClick = MenuRedo1Click
+    end
+    object Separator1: TMenuItem
+      Caption = '-'
+    end
+    object MenuCopy1: TMenuItem
+      Caption = 'Copy'
+      OnClick = MenuCopy1Click
+    end
+    object MenuCut1: TMenuItem
+      Caption = 'Cut'
+      OnClick = MenuCut1Click
+    end
+    object MenuPaste1: TMenuItem
+      Caption = 'Paste'
+      OnClick = MenuPaste1Click
+    end
   end
 end
