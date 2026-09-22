@@ -6,49 +6,73 @@ interface
 
 uses
       Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,
-			SynEdit, SynEditKeyCmds, LCLType;
+            SynEdit, SynEditKeyCmds, LCLType, ActnList, StdActns;
 
 type
 
-			{ TForm2 }
+      { TForm2 }
 
       TForm2 = class(TForm)
-						Button2Open: TButton;
-						Button2Save: TButton;
-						Button2SaveAs: TButton;
-						MainMenu2: TMainMenu;
-						MemoLabel: TLabel;
-						Menu2File: TMenuItem;
-						Menu2Edit: TMenuItem;
-						Menu2Open: TMenuItem;
-						Menu2Save: TMenuItem;
-						Menu2SaveAs: TMenuItem;
-						Menu2Copy: TMenuItem;
-						Menu2Cut: TMenuItem;
-						Menu2Paste: TMenuItem;
-						MenuUndo1: TMenuItem;
-						MenuRedo1: TMenuItem;
-						MenuCopy1: TMenuItem;
-						MenuCut1: TMenuItem;
-						MenuPaste1: TMenuItem;
-						OpenDialog1: TOpenDialog;
-						PopupMenu1: TPopupMenu;
-						SaveDialog1: TSaveDialog;
-						Separator1: TMenuItem;
-						SynEdit1: TSynEdit;
-						procedure MenuCopy1Click(Sender: TObject);
-						procedure MenuCut1Click(Sender: TObject);
-						procedure MenuPaste1Click(Sender: TObject);
-      procedure MenuRedo1Click(Sender: TObject);
-      procedure MenuUndo1Click(Sender: TObject);
-      procedure Undo1Click(Sender: TObject);
-            procedure OpenClick(Sender: TObject);
-            procedure FormCreate(Sender: TObject);
-            procedure SynEdit1Change(Sender: TObject);
-						procedure SaveAsClick(Sender: TObject);
-						procedure SaveClick(Sender: TObject);
-            procedure ClearFileName;
-            procedure SetFileName(fn: string);
+           actEditRedo: TAction;
+           actFileSave: TAction;
+           actFileOpen: TAction;
+           actFileSaveAs: TAction;
+           actEditCopy: TEditCopy;
+           actEditCut: TEditCut;
+           actEditPaste: TEditPaste;
+           actEditSelectAll: TEditSelectAll;
+           actEditUndo: TEditUndo;
+           actSearchFind: TSearchFind;
+           actSearchReplace: TSearchReplace;
+           ActionList1: TActionList;
+           Button2Open: TButton;
+           Button2Save: TButton;
+           Button2SaveAs: TButton;
+           MemoLabel: TLabel;
+           PopupMenu1: TPopupMenu;
+           MenuUndo1: TMenuItem;
+           MenuRedo1: TMenuItem;
+           MenuCopy1: TMenuItem;
+           MenuCut1: TMenuItem;
+           MenuPaste1: TMenuItem;
+           MenOpen1: TMenuItem;
+           MenuSaveAs1: TMenuItem;
+           MenuSave1: TMenuItem;
+           MenuSelectAll1: TMenuItem;
+           MenuSelectAll2: TMenuItem;
+           MainMenu2: TMainMenu;
+           Menu2File: TMenuItem;
+           Menu2Edit: TMenuItem;
+           Menu2Open: TMenuItem;
+           Menu2Save: TMenuItem;
+           Menu2SaveAs: TMenuItem;
+           Menu2Copy: TMenuItem;
+           Menu2Cut: TMenuItem;
+           Menu2Paste: TMenuItem;
+           Separator2: TMenuItem;
+           MenuRedo2: TMenuItem;
+           Menu2Undo: TMenuItem;
+           OpenDialog1: TOpenDialog;
+           SaveDialog1: TSaveDialog;
+           Separator1: TMenuItem;
+           Separator3: TMenuItem;
+           Separator4: TMenuItem;
+           Separator5: TMenuItem;
+           SynEdit1: TSynEdit;
+           procedure actActions1Update(Sender: TObject);
+           procedure actEditCutExecute(Sender: TObject);
+           procedure actEditPasteExecute(Sender: TObject);
+           procedure actEditRedoExecute(Sender: TObject);
+           procedure actEditSelectAllExecute(Sender: TObject);
+           procedure actEditUndoExecute(Sender: TObject);
+           procedure actEditCopyExecute(Sender: TObject);
+           procedure FormCreate(Sender: TObject);
+           procedure SynEdit1Change(Sender: TObject);
+           procedure TextBoxOpen(Sender: TObject);
+           procedure TextBoxSave(Sender: TObject);
+           procedure TextBoxSaveAs(Sender: TObject);
+           procedure ClearFileName;
+           procedure SetFileName(fn: string);
 
       private
            savedFileName: string;
@@ -105,15 +129,15 @@ var
 begin
   validMidi := False;
   for i:=0 to Form2.SynEdit1.Lines.Count-1 do
-	  begin
-		 line := Trim(Form2.SynEdit1.Lines[i]);
-		   // Skip blank lines; check first non-blank line
-		   if line <> '' then
-		   begin
-		     validMidi := copy(line, 1, 6) = 'MFile ';
-		     Break;
-		   end
-		end;
+      begin
+         line := Trim(Form2.SynEdit1.Lines[i]);
+           // Skip blank lines; check first non-blank line
+           if line <> '' then
+           begin
+             validMidi := copy(line, 1, 6) = 'MFile ';
+             Break;
+           end
+        end;
     Form2.validMidiText := validMidi;
     if validMidi then
     begin
@@ -123,7 +147,7 @@ begin
       MemoLabel.Visible := False;
       MemoLabel.Height := 0;
       SynEdit1.Top := MemoTop;
-		end
+        end
     else
     begin
       if MemoLabel.Caption = '' then
@@ -133,7 +157,7 @@ begin
       MemoLabel.Top := MemoTop;
       SynEdit1.Top := MemoTop + MemoLabel.Height;
       // MemoLabel.BringToFront();
-		end;
+        end;
 end;
 
 
@@ -163,12 +187,9 @@ begin
       for i := Count - 1 downto 0 do
         with Items[i] do
         begin
-          // Change various Crtl-letter to Cmd-letter
-          if (Key in [VK_A, VK_F, VK_C, VK_X, VK_V, VK_Z]) and (ssCtrl in Shift) then
-             Shift := Shift - [ssCtrl] + [ssMeta];
           // Remove undesired Ctrl+arrow shortcuts
           // these could conflict with MacOS keys
-          // Also remove Ctrl-N because we need it below
+          // Remove Ctrl-N because we need it below
          if ((Key in [VK_N, VK_LEFT, VK_RIGHT, VK_UP, VK_DOWN]) and (ssCtrl in Shift))
          // Remove column select mode
             or (Command in [ecNormalSelect, ecColumnSelect, ecLineSelect]) then
@@ -202,40 +223,73 @@ begin
       AddKey(ecInsertLine, VK_O, [ssCtrl]);  // Ctrl-O
     end;
   {$ENDIF}
+
+  // Set Action shortcuts - ssModifier is Meta on MacOS, Ctrl on Windows/Linux
+  actEditUndo.ShortCut := ShortCut(VK_Z, [ssModifier]);
+  actEditRedo.ShortCut := ShortCut(VK_Z, [ssModifier, ssShift]);
+  actEditCut.ShortCut := ShortCut(VK_X, [ssModifier]);
+  actEditCopy.ShortCut := ShortCut(VK_C, [ssModifier]);
+  actEditPaste.ShortCut := ShortCut(VK_V, [ssModifier]);
+  actEditSelectAll.ShortCut := ShortCut(VK_A, [ssModifier]);
+  actSearchFind.ShortCut := ShortCut(VK_F, [ssModifier]);
+  //actSearchReplace.ShortCut := ShortCut(VK_F, [ssModifier]);
+  actFileOpen.ShortCut := ShortCut(VK_O, [ssModifier]);
+  actFileSave.ShortCut := ShortCut(VK_S, [ssModifier]);
+  actFileSaveAs.ShortCut := ShortCut(VK_S, [ssModifier, ssShift]);
 end;
 
 
-procedure TForm2.MenuUndo1Click(Sender: TObject);
+procedure TForm2.actEditCutExecute(Sender: TObject);
 begin
-  SynEdit1.Undo;
+  SynEdit1.CommandProcessor(ecCut, '', nil);
 end;
 
-procedure TForm2.MenuRedo1Click(Sender: TObject);
+
+procedure TForm2.actActions1Update(Sender: TObject);
 begin
-
+  actEditUndo.Enabled := SynEdit1.CanUndo;
+  actEditRedo.Enabled := SynEdit1.CanRedo;
+  actEditCut.Enabled := SynEdit1.SelText <> '';
+  actEditCopy.Enabled := SynEdit1.SelText <> '';
+  actEditPaste.Enabled := SynEdit1.CanPaste;
+  actEditSelectAll.Enabled := SynEdit1.Text <> '';
+  //actFileOpen.Enabled := True;
+  actFileSave.Enabled := (Form2.savedFileName <> '') and (validMidiText);
+  actFileSaveAs.Enabled := validMidiText;
 end;
 
-procedure TForm2.MenuCopy1Click(Sender: TObject);
+
+procedure TForm2.actEditPasteExecute(Sender: TObject);
 begin
-  SynEdit1.CopyToClipboard;
+  SynEdit1.CommandProcessor(ecPaste, '', nil);
 end;
 
-procedure TForm2.MenuCut1Click(Sender: TObject);
-begin
-  SynEdit1.CutToClipboard;
-end;
 
-procedure TForm2.MenuPaste1Click(Sender: TObject);
-begin
-  SynEdit1.PasteFromClipboard;
-end;
-
-procedure TForm2.Undo1Click(Sender: TObject);
+procedure TForm2.actEditRedoExecute(Sender: TObject);
 begin
   SynEdit1.Redo;
 end;
 
-procedure TForm2.OpenClick(Sender: TObject);
+
+procedure TForm2.actEditSelectAllExecute(Sender: TObject);
+begin
+  SynEdit1.CommandProcessor(ecSelectAll, '', nil);
+end;
+
+
+procedure TForm2.actEditUndoExecute(Sender: TObject);
+begin
+  SynEdit1.Undo;
+end;
+
+
+procedure TForm2.actEditCopyExecute(Sender: TObject);
+begin
+  SynEdit1.CommandProcessor(ecCopy, '', nil);
+end;
+
+
+procedure TForm2.TextBoxOpen(Sender: TObject);
 var filename: string;
 begin
   OpenDialog1.Filter :=
@@ -251,21 +305,22 @@ begin
 end;
 
 
-procedure TForm2.SaveClick(Sender: TObject);
+procedure TForm2.TextBoxSave(Sender: TObject);
 begin
   if savedFileName <> '' then
     SynEdit1.Lines.SaveToFile(savedFileName);
 end;
 
 
-procedure TForm2.SaveAsClick(Sender: TObject);
+procedure TForm2.TextBoxSaveAs(Sender: TObject);
 begin
+  SaveDialog1.Filter :=
+      'Text Files (*.txt; *.text)|*.txt; *.text|All Files (*.*)|*.*';
   if SaveDialog1.Execute then
   begin
     SetFileName(SaveDialog1.Filename);
-  	SaveClick(Sender);
-	end;
+    TextBoxSave(Sender);
+    end;
 end;
-
 
 end.

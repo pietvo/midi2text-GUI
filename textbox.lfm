@@ -14,27 +14,28 @@ object Form2: TForm2
     Height = 25
     Top = 7
     Width = 75
-    Caption = 'Open ...'
+    Action = actFileOpen
     TabOrder = 0
-    OnClick = OpenClick
+    TabStop = False
   end
   object Button2Save: TButton
     Left = 160
     Height = 25
     Top = 7
     Width = 75
-    Caption = 'Save ...'
+    Action = actFileSave
+    Caption = 'Save'
     TabOrder = 1
-    OnClick = SaveClick
+    TabStop = False
   end
   object Button2SaveAs: TButton
     Left = 288
     Height = 25
     Top = 7
     Width = 75
-    Caption = 'Save as ...'
+    Action = actFileSaveAs
     TabOrder = 2
-    OnClick = SaveAsClick
+    TabStop = False
   end
   object MemoLabel: TLabel
     AnchorSideTop.Side = asrBottom
@@ -82,33 +83,40 @@ object Form2: TForm2
       Caption = 'File'
       object Menu2Open: TMenuItem
         Caption = 'Open'
-        ShortCut = 4175
-        OnClick = OpenClick
       end
       object Menu2Save: TMenuItem
+        Action = actFileSave
         Caption = 'Save'
-        ShortCut = 4179
-        OnClick = SaveClick
       end
       object Menu2SaveAs: TMenuItem
-        Caption = 'Save As...'
-        ShortCut = 12371
-        OnClick = SaveAsClick
+        Action = actFileSaveAs
       end
     end
     object Menu2Edit: TMenuItem
       Caption = 'Edit'
+      object Menu2Undo: TMenuItem
+        Action = actEditUndo
+      end
+      object MenuRedo2: TMenuItem
+        Action = actEditRedo
+      end
+      object Separator2: TMenuItem
+        Caption = '-'
+      end
+      object MenuSelectAll2: TMenuItem
+        Action = actEditSelectAll
+      end
+      object Separator3: TMenuItem
+        Caption = '-'
+      end
       object Menu2Copy: TMenuItem
-        Caption = 'Copy'
-        ShortCut = 4163
+        Action = actEditCopy
       end
       object Menu2Cut: TMenuItem
-        Caption = 'Cut'
-        ShortCut = 4184
+        Action = actEditCut
       end
       object Menu2Paste: TMenuItem
-        Caption = 'Paste'
-        ShortCut = 16470
+        Action = actEditPaste
       end
     end
   end
@@ -124,27 +132,112 @@ object Form2: TForm2
     Left = 230
     Top = 54
     object MenuUndo1: TMenuItem
-      Caption = 'Undo'
-      OnClick = MenuUndo1Click
+      Action = actEditUndo
     end
     object MenuRedo1: TMenuItem
-      Caption = 'Redo'
-      OnClick = MenuRedo1Click
+      Action = actEditRedo
     end
     object Separator1: TMenuItem
       Caption = '-'
     end
+    object MenuSelectAll1: TMenuItem
+      Action = actEditSelectAll
+    end
+    object Separator4: TMenuItem
+      Caption = '-'
+    end
     object MenuCopy1: TMenuItem
-      Caption = 'Copy'
-      OnClick = MenuCopy1Click
+      Action = actEditCopy
     end
     object MenuCut1: TMenuItem
-      Caption = 'Cut'
-      OnClick = MenuCut1Click
+      Action = actEditCut
     end
     object MenuPaste1: TMenuItem
+      Action = actEditPaste
+    end
+    object Separator5: TMenuItem
+      Caption = '-'
+    end
+    object MenOpen1: TMenuItem
+      Action = actFileOpen
+    end
+    object MenuSave1: TMenuItem
+      Action = actFileSave
+      Caption = 'Save'
+    end
+    object MenuSaveAs1: TMenuItem
+      Action = actFileSaveAs
+    end
+  end
+  object ActionList1: TActionList
+    Left = 296
+    Top = 54
+    object actEditCut: TEditCut
+      Category = 'Edit'
+      Caption = 'Cut'
+      Hint = 'Cut'
+      OnExecute = actEditCutExecute
+      OnUpdate = actActions1Update
+    end
+    object actEditCopy: TEditCopy
+      Category = 'Edit'
+      Caption = 'Copy'
+      Hint = 'Copy'
+      OnExecute = actEditCopyExecute
+      OnUpdate = actActions1Update
+    end
+    object actEditPaste: TEditPaste
+      Category = 'Edit'
       Caption = 'Paste'
-      OnClick = MenuPaste1Click
+      Hint = 'Paste'
+      OnExecute = actEditPasteExecute
+      OnUpdate = actActions1Update
+    end
+    object actEditSelectAll: TEditSelectAll
+      Category = 'Edit'
+      Caption = 'Select All'
+      Hint = 'Select All'
+      OnExecute = actEditSelectAllExecute
+      OnUpdate = actActions1Update
+    end
+    object actEditUndo: TEditUndo
+      Category = 'Edit'
+      Caption = 'Undo'
+      Hint = 'Undo'
+      OnExecute = actEditUndoExecute
+      OnUpdate = actActions1Update
+    end
+    object actSearchFind: TSearchFind
+      Category = 'Search'
+      Caption = 'Find ...'
+      ShortCut = 4166
+    end
+    object actSearchReplace: TSearchReplace
+      Category = 'Search'
+      Caption = 'Replace'
+      Dialog.Options = [frDown, frReplace, frReplaceAll, frHidePromptOnReplace]
+    end
+    object actEditRedo: TAction
+      Category = 'File'
+      Caption = 'Redo'
+      OnExecute = actEditRedoExecute
+      OnUpdate = actActions1Update
+    end
+    object actFileSave: TAction
+      Caption = 'FileSave1'
+      Enabled = False
+      OnExecute = TextBoxSave
+      OnUpdate = actActions1Update
+    end
+    object actFileOpen: TAction
+      Category = 'File'
+      Caption = 'Open'
+      OnExecute = TextBoxOpen
+      OnUpdate = actActions1Update
+    end
+    object actFileSaveAs: TAction
+      Caption = 'Save As'
+      OnExecute = TextBoxSaveAs
     end
   end
 end
