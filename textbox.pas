@@ -98,7 +98,12 @@ Uses MainForm;
 
 procedure TForm2.setText(stream: TStream);
 begin
+  SynEdit1.ScrollBars := ssBoth;
   SynEdit1.Lines.LoadFromStream(stream);
+  // We have to manipulate the ScrollBars this way to prevent a problem
+  SynEdit1.ScrollBars := ssAutoBoth;
+  SynEdit1.Invalidate; // Force UI synchronization
+
   ClearFileName;
   if Assigned(SynEdit1.OnChange) then
     SynEdit1.OnChange(SynEdit1);
@@ -297,7 +302,12 @@ begin
   if OpenDialog1.Execute then
   begin
     SetFileName(OpenDialog1.Filename);
+    // We have to manipulate the ScrollBars this way to prevent a problem
+    SynEdit1.ScrollBars := ssBoth;
     SynEdit1.Lines.LoadFromFile(savedFileName);
+    SynEdit1.ScrollBars := ssAutoBoth;
+    SynEdit1.Invalidate; // Force UI synchronization
+
     { primitive check if it is a midi text }
     if Assigned(SynEdit1.OnChange) then
       SynEdit1.OnChange(SynEdit1);

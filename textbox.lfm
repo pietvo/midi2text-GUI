@@ -69,7 +69,6 @@ object Form2: TForm2
       ''
     )
     Options = [eoAutoIndent, eoBracketHighlight, eoGroupUndo, eoSmartTabs, eoTabsToSpaces, eoTrimTrailingSpaces]
-    ScrollBars = ssAutoBoth
     inline SynLeftGutterPartList1: TSynGutterPartList
       object SynGutterCodeFolding1: TSynGutterCodeFolding
         Visible = False
