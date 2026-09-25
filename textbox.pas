@@ -6,9 +6,11 @@ interface
 
 uses
       Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Menus,
-            SynEdit, SynEditKeyCmds, LCLType, ActnList, StdActns;
+            SynEdit, SynEditKeyCmds, SynEditTypes, LCLType, ActnList, StdActns,
+            ExtCtrls;
 
 type
+    SRType = (srFind, srReplace, srReplaceAll);
 
       { TForm2 }
 
@@ -22,13 +24,32 @@ type
            actEditPaste: TEditPaste;
            actEditSelectAll: TEditSelectAll;
            actEditUndo: TEditUndo;
-           actSearchFind: TSearchFind;
-           actSearchReplace: TSearchReplace;
+           actFindNext: TAction;
+           actFindPrev: TAction;
+           actReplaceAll: TAction;
+           actReplace: TAction;
+           actSearchFind: TAction;
            ActionList1: TActionList;
+           ButtonCloseFind: TButton;
+           ButtonPrev: TButton;
            Button2Open: TButton;
            Button2Save: TButton;
            Button2SaveAs: TButton;
+           ButtonNext: TButton;
+           ButtonReplAll: TButton;
+           ButtonRepl: TButton;
+           CheckBoxTOP: TCheckBox;
+           CheckBoxWW: TCheckBox;
+           CheckBoxMC: TCheckBox;
+           CheckBoxRE: TCheckBox;
+           EditFind: TEdit;
+           EditRepl: TEdit;
+           LabelFind: TLabel;
+           LabelRepl: TLabel;
            MemoLabel: TLabel;
+           Menu2Find: TMenuItem;
+           MenuFind1: TMenuItem;
+           PanelFind: TPanel;
            PopupMenu1: TPopupMenu;
            MenuUndo1: TMenuItem;
            MenuRedo1: TMenuItem;
@@ -66,6 +87,12 @@ type
            procedure actEditSelectAllExecute(Sender: TObject);
            procedure actEditUndoExecute(Sender: TObject);
            procedure actEditCopyExecute(Sender: TObject);
+           procedure actFindNextExecute(Sender: TObject);
+           procedure actFindPrevExecute(Sender: TObject);
+           procedure actReplaceAllExecute(Sender: TObject);
+           procedure actReplaceExecute(Sender: TObject);
+           procedure actSearchFindExecute(Sender: TObject);
+           procedure ButtonCloseFindClick(Sender: TObject);
            procedure FormCreate(Sender: TObject);
            procedure SynEdit1Change(Sender: TObject);
            procedure TextBoxOpen(Sender: TObject);
@@ -73,6 +100,9 @@ type
            procedure TextBoxSaveAs(Sender: TObject);
            procedure ClearFileName;
            procedure SetFileName(fn: string);
+           procedure SetMemoLabel;
+           procedure HideMemoLabel;
+           procedure DoSearch(forward: TSynSearchOptions; replace: SRType);
 
       private
            savedFileName: string;
@@ -87,8 +117,13 @@ type
 
 const
     MemoTop = 40; // default position of Memo in Form2
+
 var
-      Form2: TForm2;
+    Form2: TForm2;
+    FindActive: Boolean = False;
+    FirstSearch: Boolean;
+    SearchDirection: TSynSearchOptions;
+    SearchFound: Boolean;
 
 implementation
 
@@ -125,6 +160,33 @@ begin
   Menu2Save.Enabled := True;
 end;
 
+procedure TForm2.HideMemoLabel;
+begin
+  MemoLabel.Caption := '';
+  MemoLabel.Visible := False;
+  MemoLabel.Height := 0;
+end;
+
+procedure TForm2.SetMemoLabel;
+begin
+  if FindActive then Exit;
+  if Form2.validMidiText then
+  begin
+    HideMemoLabel;
+    SynEdit1.Top := MemoTop;
+  end
+  else
+  begin
+    if MemoLabel.Caption = '' then
+      MemoLabel.Caption := '⚠️  Please enter valid MFile line';
+    MemoLabel.Visible := True;
+    MemoLabel.Height := 20;
+    MemoLabel.Top := MemoTop;
+    SynEdit1.Top := MemoTop + MemoLabel.Height;
+    // MemoLabel.BringToFront();
+  end;
+end;
+
 
 procedure TForm2.SynEdit1Change(Sender: TObject);
 var
@@ -134,35 +196,20 @@ var
 begin
   validMidi := False;
   for i:=0 to Form2.SynEdit1.Lines.Count-1 do
-      begin
-         line := Trim(Form2.SynEdit1.Lines[i]);
-           // Skip blank lines; check first non-blank line
-           if line <> '' then
-           begin
-             validMidi := copy(line, 1, 6) = 'MFile ';
-             Break;
-           end
-        end;
-    Form2.validMidiText := validMidi;
-    if validMidi then
     begin
-      if Assigned(CallBackProc) then
-        CallBackProc;
-      MemoLabel.Caption := '';
-      MemoLabel.Visible := False;
-      MemoLabel.Height := 0;
-      SynEdit1.Top := MemoTop;
-        end
-    else
-    begin
-      if MemoLabel.Caption = '' then
-      MemoLabel.Caption := '⚠️  Please enter valid MFile line';
-      MemoLabel.Visible := True;
-      MemoLabel.Height := 20;
-      MemoLabel.Top := MemoTop;
-      SynEdit1.Top := MemoTop + MemoLabel.Height;
-      // MemoLabel.BringToFront();
-        end;
+       line := Trim(Form2.SynEdit1.Lines[i]);
+         // Skip blank lines and comment;
+         // check first non-blank, non-comment line
+         if (line <> '') and (line[1] <> '#') then
+         begin
+           validMidi := copy(line, 1, 6) = 'MFile ';
+           Break;
+         end
+    end;
+  Form2.validMidiText := validMidi;
+  if validMidi and Assigned(CallBackProc) then
+    CallBackProc;
+  SetMemoLabel;
 end;
 
 
@@ -237,7 +284,8 @@ begin
   actEditPaste.ShortCut := ShortCut(VK_V, [ssModifier]);
   actEditSelectAll.ShortCut := ShortCut(VK_A, [ssModifier]);
   actSearchFind.ShortCut := ShortCut(VK_F, [ssModifier]);
-  //actSearchReplace.ShortCut := ShortCut(VK_F, [ssModifier]);
+  actFindNext.ShortCut := ShortCut(VK_G, [ssModifier]);
+  actFindPrev.ShortCut := ShortCut(VK_G, [ssModifier, ssShift]);
   actFileOpen.ShortCut := ShortCut(VK_O, [ssModifier]);
   actFileSave.ShortCut := ShortCut(VK_S, [ssModifier]);
   actFileSaveAs.ShortCut := ShortCut(VK_S, [ssModifier, ssShift]);
@@ -294,6 +342,130 @@ begin
 end;
 
 
+procedure TForm2.DoSearch(forward: TSynSearchOptions; replace: SRType);
+//srFind, srReplace, srReplaceAll
+var
+  options: TSynSearchOptions;
+  nrFound: integer;
+  endMessage: string;
+  lastLine: integer;
+  extPosition: TPoint;
+
+begin
+  SearchDirection := forward; // remember Search direction
+  options := SearchDirection;
+  if CheckBoxWW.Checked then
+    options := options + [ssoWholeWord];
+  if CheckBoxMC.Checked then
+    options := options + [ssoMatchCase];
+  if CheckBoxRE.Checked then
+    options := options + [ssoRegExpr];
+  if CheckBoxTOP.Checked then
+  begin
+    options := options + [ssoEntireScope];
+    CheckBoxTOP.Checked := False;
+    end;
+    if not FirstSearch then
+  begin
+    if (replace = srReplace) and SearchFound then
+    begin
+      //SynEdit1.SelText := EditRepl.Text // doesn't work for regexp
+      SynEdit1.SearchReplace(EditFind.Text, EditRepl.Text,
+                             options + [ssoSelectedOnly, ssoReplace]);
+    end;
+    options := options + [ssoFindContinue];
+    end;
+
+  if (replace = srReplaceAll) then
+  begin
+    if SearchFound then     // Replace the just found instance
+      SynEdit1.SearchReplace(EditFind.Text, EditRepl.Text,
+                             options + [ssoSelectedOnly, ssoReplace]);
+    // replace the rest
+    nrFound := SynEdit1.SearchReplace(EditFind.Text, EditRepl.Text,
+                                      options + [ssoReplaceAll])
+    end
+    else
+  begin
+    nrFound := SynEdit1.SearchReplace(EditFind.Text, '', options);
+    FirstSearch := False;
+  end;
+
+    if nrFound = 0 then  // At end of search
+  begin
+    // Ask user to continue at top/bottom
+    if SearchDirection = [] then // Forward
+    begin
+      endMessage := 'End of document. Contine at top?';
+      extPosition := Point(1,1);
+    end
+    else
+    begin
+      endMessage := 'Begin of document. Contine at bottom?';
+      lastline := SynEdit1.Lines.Count;
+      if lastline > 0 then
+        extPosition := Point(Length(SynEdit1.Lines[lastline - 1]) + 1, lastline)
+      else
+        extPosition := Point(1,1); // empty document
+    end;
+    if MessageDlg(endMessage, mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+    begin
+      // start at row 1, column 1
+      SynEdit1.CaretXY := extPosition;
+      options := options + [ssoFindContinue];
+      nrFound := SynEdit1.SearchReplace(EditFind.Text, '', options);
+        end;
+    end;
+
+  SearchFound := (nrFound > 0);
+end;
+
+
+procedure TForm2.actFindNextExecute(Sender: TObject);
+begin
+  DoSearch([], srFind);
+end;
+
+procedure TForm2.actFindPrevExecute(Sender: TObject);
+begin
+  DoSearch([ssoBackwards], srFind);
+end;
+
+
+{ Start a Find/Replace dialog (panel) }
+
+procedure TForm2.actSearchFindExecute(Sender: TObject);
+begin
+  HideMemoLabel;
+  SynEdit1.Top := MemoTop + PanelFind.Height;
+  PanelFind.Visible := True;
+  EditFind.SetFocus;
+  FindActive := True;
+  FirstSearch := True;
+  SearchFound := False;
+end;
+
+
+procedure TForm2.actReplaceExecute(Sender: TObject);
+begin
+  DoSearch(SearchDirection, srReplace);
+end;
+
+
+procedure TForm2.actReplaceAllExecute(Sender: TObject);
+begin
+  DoSearch(SearchDirection, srReplaceAll);
+end;
+
+
+procedure TForm2.ButtonCloseFindClick(Sender: TObject);
+begin
+  PanelFind.Visible := False;
+  FindActive := False;
+  SetMemoLabel;
+end;
+
+
 procedure TForm2.TextBoxOpen(Sender: TObject);
 var filename: string;
 begin
@@ -311,6 +483,7 @@ begin
     { primitive check if it is a midi text }
     if Assigned(SynEdit1.OnChange) then
       SynEdit1.OnChange(SynEdit1);
+    SetMemoLabel;
   end
 end;
 

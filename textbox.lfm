@@ -69,15 +69,170 @@ object Form2: TForm2
       ''
     )
     Options = [eoAutoIndent, eoBracketHighlight, eoGroupUndo, eoSmartTabs, eoTabsToSpaces, eoTrimTrailingSpaces]
+    ScrollBars = ssAutoBoth
     inline SynLeftGutterPartList1: TSynGutterPartList
       object SynGutterCodeFolding1: TSynGutterCodeFolding
         Visible = False
       end
     end
   end
+  object PanelFind: TPanel
+    AnchorSideRight.Side = asrBottom
+    Left = 0
+    Height = 94
+    Top = 40
+    Width = 407
+    Anchors = [akTop, akLeft, akRight]
+    BorderWidth = 1
+    BorderStyle = bsSingle
+    ChildSizing.HorizontalSpacing = 5
+    ChildSizing.EnlargeHorizontal = crsHomogenousSpaceResize
+    ChildSizing.ControlsPerLine = 4
+    ClientHeight = 92
+    ClientWidth = 405
+    TabOrder = 4
+    Visible = False
+    object LabelFind: TLabel
+      Left = 10
+      Height = 16
+      Top = 12
+      Width = 30
+      Caption = 'Find:'
+    end
+    object LabelRepl: TLabel
+      Left = 10
+      Height = 16
+      Top = 39
+      Width = 52
+      Caption = 'Replace:'
+    end
+    object ButtonCloseFind: TButton
+      AnchorSideRight.Side = asrBottom
+      Left = 366
+      Height = 30
+      Top = 0
+      Width = 30
+      Anchors = [akTop, akRight]
+      Caption = '❌'
+      Font.Color = clRed
+      ParentFont = False
+      TabOrder = 0
+      OnClick = ButtonCloseFindClick
+    end
+    object ButtonPrev: TButton
+      AnchorSideRight.Control = ButtonCloseFind
+      Left = 325
+      Height = 30
+      Top = 0
+      Width = 36
+      Action = actFindPrev
+      Anchors = [akTop, akRight]
+      BorderSpacing.Right = 5
+      Caption = '◀️'
+      TabOrder = 1
+    end
+    object ButtonNext: TButton
+      AnchorSideRight.Control = ButtonPrev
+      Left = 280
+      Height = 30
+      Top = 0
+      Width = 40
+      Action = actFindNext
+      Anchors = [akTop, akRight]
+      BorderSpacing.Right = 5
+      Caption = '▶️️'
+      TabOrder = 2
+    end
+    object ButtonReplAll: TButton
+      AnchorSideTop.Control = ButtonNext
+      AnchorSideTop.Side = asrBottom
+      AnchorSideRight.Side = asrBottom
+      Left = 309
+      Height = 25
+      Top = 32
+      Width = 88
+      Action = actReplaceAll
+      Anchors = [akTop, akRight]
+      BorderSpacing.Top = 2
+      TabOrder = 3
+    end
+    object ButtonRepl: TButton
+      AnchorSideTop.Control = ButtonReplAll
+      AnchorSideRight.Control = ButtonReplAll
+      Left = 228
+      Height = 25
+      Top = 32
+      Width = 76
+      Action = actReplace
+      Anchors = [akTop, akRight]
+      BorderSpacing.Right = 5
+      TabOrder = 4
+    end
+    object EditFind: TEdit
+      Left = 72
+      Height = 20
+      Top = 8
+      Width = 150
+      TabOrder = 5
+    end
+    object EditRepl: TEdit
+      Left = 72
+      Height = 20
+      Top = 35
+      Width = 150
+      TabOrder = 6
+    end
+    object CheckBoxWW: TCheckBox
+      Left = 10
+      Height = 18
+      Top = 62
+      Width = 97
+      Anchors = []
+      Caption = 'whole words'
+      TabOrder = 7
+    end
+    object CheckBoxMC: TCheckBox
+      AnchorSideLeft.Control = CheckBoxWW
+      AnchorSideLeft.Side = asrBottom
+      Left = 111
+      Height = 18
+      Top = 64
+      Width = 91
+      Anchors = [akTop]
+      BorderSpacing.Left = 5
+      Caption = 'match case'
+      TabOrder = 8
+    end
+    object CheckBoxRE: TCheckBox
+      AnchorSideLeft.Control = CheckBoxTOP
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideRight.Side = asrBottom
+      Left = 286
+      Height = 18
+      Top = 64
+      Width = 80
+      Anchors = [akTop]
+      AutoSize = False
+      BorderSpacing.Left = 5
+      Caption = 'reg.expr.'
+      TabOrder = 9
+    end
+    object CheckBoxTOP: TCheckBox
+      AnchorSideLeft.Control = CheckBoxMC
+      AnchorSideLeft.Side = asrBottom
+      Left = 207
+      Height = 18
+      Top = 62
+      Width = 75
+      Anchors = []
+      BorderSpacing.Left = 5
+      Caption = 'from top'
+      TabOrder = 10
+    end
+  end
   object MainMenu2: TMainMenu
-    Left = 26
-    Top = 54
+    Left = 40
+    Top = 400
     object Menu2File: TMenuItem
       Caption = 'File'
       object Menu2Open: TMenuItem
@@ -105,6 +260,9 @@ object Form2: TForm2
       object MenuSelectAll2: TMenuItem
         Action = actEditSelectAll
       end
+      object Menu2Find: TMenuItem
+        Action = actSearchFind
+      end
       object Separator3: TMenuItem
         Caption = '-'
       end
@@ -120,16 +278,16 @@ object Form2: TForm2
     end
   end
   object OpenDialog1: TOpenDialog
-    Left = 96
-    Top = 54
+    Left = 112
+    Top = 400
   end
   object SaveDialog1: TSaveDialog
-    Left = 152
-    Top = 54
+    Left = 176
+    Top = 400
   end
   object PopupMenu1: TPopupMenu
     Left = 230
-    Top = 54
+    Top = 400
     object MenuUndo1: TMenuItem
       Action = actEditUndo
     end
@@ -141,6 +299,9 @@ object Form2: TForm2
     end
     object MenuSelectAll1: TMenuItem
       Action = actEditSelectAll
+    end
+    object MenuFind1: TMenuItem
+      Action = actSearchFind
     end
     object Separator4: TMenuItem
       Caption = '-'
@@ -169,8 +330,8 @@ object Form2: TForm2
     end
   end
   object ActionList1: TActionList
-    Left = 296
-    Top = 54
+    Left = 304
+    Top = 400
     object actEditCut: TEditCut
       Category = 'Edit'
       Caption = 'Cut'
@@ -206,16 +367,6 @@ object Form2: TForm2
       OnExecute = actEditUndoExecute
       OnUpdate = actActions1Update
     end
-    object actSearchFind: TSearchFind
-      Category = 'Search'
-      Caption = 'Find ...'
-      ShortCut = 4166
-    end
-    object actSearchReplace: TSearchReplace
-      Category = 'Search'
-      Caption = 'Replace'
-      Dialog.Options = [frDown, frReplace, frReplaceAll, frHidePromptOnReplace]
-    end
     object actEditRedo: TAction
       Category = 'File'
       Caption = 'Redo'
@@ -237,6 +388,26 @@ object Form2: TForm2
     object actFileSaveAs: TAction
       Caption = 'Save As'
       OnExecute = TextBoxSaveAs
+    end
+    object actSearchFind: TAction
+      Caption = 'Find ...'
+      OnExecute = actSearchFindExecute
+    end
+    object actFindNext: TAction
+      Caption = 'FindNext'
+      OnExecute = actFindNextExecute
+    end
+    object actFindPrev: TAction
+      Caption = 'FindPrev'
+      OnExecute = actFindPrevExecute
+    end
+    object actReplace: TAction
+      Caption = 'Replace'
+      OnExecute = actReplaceExecute
+    end
+    object actReplaceAll: TAction
+      Caption = 'Replace All'
+      OnExecute = actReplaceAllExecute
     end
   end
 end
