@@ -53,7 +53,6 @@ type
 						Label15: TLabel;
 						LabelMidiIn: TLabel;
 						Label17: TLabel;
-						//LabelTextInOut: TLabel;
 						Label2: TLabel;
 						Label22: TLabel;
 						Label3: TLabel;
@@ -93,11 +92,6 @@ type
 						procedure MenuItemConvertClick(Sender: TObject);
 						procedure MenuItemOpenClick(Sender: TObject);
 						procedure MenuItemSaveAsClick(Sender: TObject);
-						procedure MenuItemTexttoMidiClick(Sender: TObject);
-						procedure Page1BeforeShow(ASender: TObject; ANewPage: TPage;
-									ANewIndex: Integer);
-						procedure Page2BeforeShow(ASender: TObject; ANewPage: TPage;
-									ANewIndex: Integer);
 						procedure SelectMidiInFile(Sender: TObject);
 						procedure SelectMidiOutFile(Sender: TObject);
 						procedure ButtonTextBoxInClick(Sender: TObject);
@@ -316,9 +310,7 @@ begin
   begin
     MidiFile := OpenDialog1.Filename;
     LabelMidiIn.Caption := MidiFile;
-  //  MidiIn := True;
     CheckMF2TConvert;
-  	//ShowMessage('File selected: ' + filename);
   end
 end;
 
@@ -335,7 +327,6 @@ begin
     TextStdInOut := False;
     MenuItemTextBox.checked := False;
     CheckMF2TConvert;
-  	//ShowMessage('File selected: ' + filename);
   end
 end;
 
@@ -371,7 +362,6 @@ begin
     TextStdInOut := False;
     MenuItemTextBox.checked := False;
     CheckT2MFConvert;
-  	//ShowMessage('File selected: ' + filename);
   end
 end;
 
@@ -386,7 +376,6 @@ begin
     MidiFile := SaveDialog1.Filename;
     LabelMidiOut.Caption := MidiFile;
     CheckT2MFConvert;
-  	//ShowMessage('File selected: ' + filename);
   end
 end;
 
@@ -556,26 +545,6 @@ begin
         SelectMidiOutFile(Sender)
       else
         SelectTextOutFile(Sender)
-end;
-
-
-procedure TForm1.MenuItemTexttoMidiClick(Sender: TObject);
-begin
-
-end;
-
-
-procedure TForm1.Page1BeforeShow(ASender: TObject; ANewPage: TPage;
-			ANewIndex: Integer);
-begin
-
-end;
-
-
-procedure TForm1.Page2BeforeShow(ASender: TObject; ANewPage: TPage;
-			ANewIndex: Integer);
-begin
-
 end;
 
 

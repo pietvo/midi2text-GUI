@@ -19,7 +19,6 @@ object Form1: TForm1
     Align = alClient
     TabOrder = 0
     object Page1: TPage
-      OnBeforeShow = Page1BeforeShow
       Color = 8025909
       object Label3: TLabel
         AnchorSideTop.Side = asrCenter
@@ -578,7 +577,6 @@ object Form1: TForm1
       end
     end
     object Page2: TPage
-      OnBeforeShow = Page2BeforeShow
       object Label5: TLabel
         AnchorSideTop.Side = asrCenter
         Left = 80

@@ -467,7 +467,6 @@ end;
 
 
 procedure TForm2.TextBoxOpen(Sender: TObject);
-var filename: string;
 begin
   OpenDialog1.Filter :=
       'Text Files (*.txt; *.text)|*.txt; *.text|All Files (*.*)|*.*';
