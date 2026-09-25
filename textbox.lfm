@@ -19,7 +19,7 @@ object Form2: TForm2
     TabStop = False
   end
   object Button2Save: TButton
-    Left = 160
+    Left = 152
     Height = 25
     Top = 7
     Width = 75
@@ -227,6 +227,18 @@ object Form2: TForm2
       Caption = 'from top'
       TabOrder = 10
     end
+  end
+  object LabelModified: TLabel
+    Left = 248
+    Height = 24
+    Top = 8
+    Width = 20
+    Alignment = taCenter
+    AutoSize = False
+    Caption = '*'
+    Font.Color = clRed
+    Font.Height = -32
+    ParentFont = False
   end
   object MainMenu2: TMainMenu
     Left = 40

@@ -44,6 +44,7 @@ type
            CheckBoxRE: TCheckBox;
            EditFind: TEdit;
            EditRepl: TEdit;
+		   LabelModified: TLabel;
            LabelFind: TLabel;
            LabelRepl: TLabel;
            MemoLabel: TLabel;
@@ -138,7 +139,8 @@ begin
   // We have to manipulate the ScrollBars this way to prevent a problem
   SynEdit1.ScrollBars := ssAutoBoth;
   SynEdit1.Invalidate; // Force UI synchronization
-
+  SynEdit1.Modified := True;
+  SynEdit1Change(SynEdit1);
   ClearFileName;
   if Assigned(SynEdit1.OnChange) then
     SynEdit1.OnChange(SynEdit1);
@@ -189,6 +191,9 @@ end;
 
 
 procedure TForm2.SynEdit1Change(Sender: TObject);
+const
+  CheckMark ='✔';
+  ModMark = '*';
 var
   i:integer;
   line: string;
@@ -210,6 +215,19 @@ begin
   if validMidi and Assigned(CallBackProc) then
     CallBackProc;
   SetMemoLabel;
+  
+  if SynEdit1.Modified then
+  begin
+    LabelModified.Font.Color := clRed;
+    LabelModified.Font.Size := 24;
+        LabelModified.Caption := ModMark;
+  end
+  else
+  begin
+    LabelModified.Font.Color := clGreen;
+    LabelModified.Font.Size := 14;
+    LabelModified.Caption := CheckMark;
+  end;
 end;
 
 
@@ -448,6 +466,8 @@ begin
     SynEdit1.Lines.LoadFromFile(savedFileName);
     SynEdit1.ScrollBars := ssAutoBoth;
     SynEdit1.Invalidate; // Force UI synchronization
+    SynEdit1.Modified := False;
+    SynEdit1Change(Sender);
 
     { primitive check if it is a midi text }
     if Assigned(SynEdit1.OnChange) then
@@ -460,7 +480,11 @@ end;
 procedure TForm2.TextBoxSave(Sender: TObject);
 begin
   if savedFileName <> '' then
+  begin
     SynEdit1.Lines.SaveToFile(savedFileName);
+    SynEdit1.Modified := False;
+    SynEdit1Change(Sender);
+	end;
 end;
 
 
