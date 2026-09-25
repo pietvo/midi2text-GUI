@@ -144,16 +144,14 @@ end;
 procedure TForm2.ClearFileName;
 begin
   savedFileName := '';
-  Button2Save.Enabled := False;
-  Menu2Save.Enabled := False;
+  actFileSave.Enabled := False;
 end;
 
 
 procedure TForm2.SetFileName(fn: string);
 begin
   savedFileName := fn;
-  Button2Save.Enabled := True;
-  Menu2Save.Enabled := True;
+  actFileSave.Enabled := True;
 end;
 
 
@@ -298,7 +296,6 @@ begin
   actEditCopy.Enabled := SynEdit1.SelText <> '';
   actEditPaste.Enabled := SynEdit1.CanPaste;
   actEditSelectAll.Enabled := SynEdit1.Text <> '';
-  //actFileOpen.Enabled := True;
   actFileSave.Enabled := (Form2.savedFileName <> '') and (validMidiText);
   actFileSaveAs.Enabled := validMidiText;
 end;
