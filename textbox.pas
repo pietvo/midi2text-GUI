@@ -131,6 +131,7 @@ Uses MainForm;
 
 {$R *.lfm}
 
+
 procedure TForm2.setText(stream: TStream);
 begin
   SynEdit1.ScrollBars := ssBoth;
@@ -160,12 +161,14 @@ begin
   Menu2Save.Enabled := True;
 end;
 
+
 procedure TForm2.HideMemoLabel;
 begin
   MemoLabel.Caption := '';
   MemoLabel.Visible := False;
   MemoLabel.Height := 0;
 end;
+
 
 procedure TForm2.SetMemoLabel;
 begin
@@ -425,6 +428,7 @@ procedure TForm2.actFindNextExecute(Sender: TObject);
 begin
   DoSearch([], srFind);
 end;
+
 
 procedure TForm2.actFindPrevExecute(Sender: TObject);
 begin

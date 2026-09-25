@@ -9,98 +9,98 @@ uses
        BaseUnix, // Required for fpClose
       {$ENDIF}
       Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-			TextBox, Process, LCLType, Menus, ComCtrls, Math;
+            TextBox, Process, LCLType, Menus, ComCtrls, Math;
 
 type
 
-			{ TForm1 }
+            { TForm1 }
 
       TForm1 = class(TForm)
-						ButtonConvert2: TButton;
-						ButtonMidiIn: TButton;
-						ButtonTextInOut: TButton;
-						ButtonTextBoxOut: TButton;
-						ButtonConvert1: TButton;
-						ButtonTextIn: TButton;
-						ButtonMidiOut: TButton;
-						ButtonTextBoxIn: TButton;
-						ButtonTextOut: TButton;
-						CheckBoxOptionM: TCheckBox;
-						CheckBoxOptionN: TCheckBox;
-						CheckBoxOptionOff1: TCheckBox;
-						CheckBoxOptionOff2: TCheckBox;
-						CheckBoxOptionOn1: TCheckBox;
-						CheckBoxOptionOn2: TCheckBox;
-						CheckBoxOptionB: TCheckBox;
-						CheckBoxOptionV: TCheckBox;
-						CheckBoxOptionF: TCheckBox;
-						CheckBoxOptionR: TCheckBox;
-						Edit1: TEdit;
-						FPosWarningBox: TLabel;
-						Image1: TImage;
-						Image2: TImage;
-						Label1: TLabel;
-						Label10: TLabel;
-						Label11: TLabel;
-						Label12: TLabel;
-						Label16: TLabel;
-						Label18: TLabel;
-						Label19: TLabel;
-						LabelTextIn: TLabel;
-						LabelOptions: TLabel;
-						Label13: TLabel;
-						Label14: TLabel;
-						Label15: TLabel;
-						LabelMidiIn: TLabel;
-						Label17: TLabel;
-						Label2: TLabel;
-						Label22: TLabel;
-						Label3: TLabel;
-						Label4: TLabel;
-						Label5: TLabel;
-						Label6: TLabel;
-						Label7: TLabel;
-						Label8: TLabel;
-						Label9: TLabel;
-						LabelTextOut: TLabel;
-						LabelMidiOut: TLabel;
-						MainMenu1: TMainMenu;
-						MenuFile: TMenuItem;
-						MenuShowTextBox: TMenuItem;
-						MenuHideTextBox: TMenuItem;
-						Separator2: TMenuItem;
-						Separator1: TMenuItem;
-						MenuItemTextBox: TMenuItem;
-						MenuItemOpen: TMenuItem;
-						MenuItemSaveAs: TMenuItem;
-						MenuItemConvert: TMenuItem;
-						MenuWindow: TMenuItem;
-						MenuItemTextToMidi: TMenuItem;
-						MenuItemMidiToText: TMenuItem;
-						MenuHelp: TMenuItem;
-						Notebook1: TNotebook;
-						OpenDialog1: TOpenDialog;
-						Page1: TPage;
-						Page2: TPage;
-						SaveDialog1: TSaveDialog;
-						StatusBar1: TStatusBar;
-						procedure ButtonConvert1Click(Sender: TObject);
+            ButtonConvert2: TButton;
+            ButtonMidiIn: TButton;
+            ButtonTextInOut: TButton;
+            ButtonTextBoxOut: TButton;
+            ButtonConvert1: TButton;
+            ButtonTextIn: TButton;
+            ButtonMidiOut: TButton;
+            ButtonTextBoxIn: TButton;
+            ButtonTextOut: TButton;
+            CheckBoxOptionM: TCheckBox;
+            CheckBoxOptionN: TCheckBox;
+            CheckBoxOptionOff1: TCheckBox;
+            CheckBoxOptionOff2: TCheckBox;
+            CheckBoxOptionOn1: TCheckBox;
+            CheckBoxOptionOn2: TCheckBox;
+            CheckBoxOptionB: TCheckBox;
+            CheckBoxOptionV: TCheckBox;
+            CheckBoxOptionF: TCheckBox;
+            CheckBoxOptionR: TCheckBox;
+            Edit1: TEdit;
+            FPosWarningBox: TLabel;
+            Image1: TImage;
+            Image2: TImage;
+            Label1: TLabel;
+            Label10: TLabel;
+            Label11: TLabel;
+            Label12: TLabel;
+            Label16: TLabel;
+            Label18: TLabel;
+            Label19: TLabel;
+            LabelTextIn: TLabel;
+            LabelOptions: TLabel;
+            Label13: TLabel;
+            Label14: TLabel;
+            Label15: TLabel;
+            LabelMidiIn: TLabel;
+            Label17: TLabel;
+            Label2: TLabel;
+            Label22: TLabel;
+            Label3: TLabel;
+            Label4: TLabel;
+            Label5: TLabel;
+            Label6: TLabel;
+            Label7: TLabel;
+            Label8: TLabel;
+            Label9: TLabel;
+            LabelTextOut: TLabel;
+            LabelMidiOut: TLabel;
+            MainMenu1: TMainMenu;
+            MenuFile: TMenuItem;
+            MenuShowTextBox: TMenuItem;
+            MenuHideTextBox: TMenuItem;
+            Separator2: TMenuItem;
+            Separator1: TMenuItem;
+            MenuItemTextBox: TMenuItem;
+            MenuItemOpen: TMenuItem;
+            MenuItemSaveAs: TMenuItem;
+            MenuItemConvert: TMenuItem;
+            MenuWindow: TMenuItem;
+            MenuItemTextToMidi: TMenuItem;
+            MenuItemMidiToText: TMenuItem;
+            MenuHelp: TMenuItem;
+            Notebook1: TNotebook;
+            OpenDialog1: TOpenDialog;
+            Page1: TPage;
+            Page2: TPage;
+            SaveDialog1: TSaveDialog;
+            StatusBar1: TStatusBar;
+            procedure ButtonConvert1Click(Sender: TObject);
             procedure ButtonConvert2Click(Sender: TObject);
-						procedure FoldPosCheck(Sender: TObject);
-						procedure MenuHideTextBoxClick(Sender: TObject);
-						procedure MenuItemTextBoxClick(Sender: TObject);
-						procedure MenuItemConvertClick(Sender: TObject);
-						procedure MenuItemOpenClick(Sender: TObject);
-						procedure MenuItemSaveAsClick(Sender: TObject);
-						procedure SelectMidiInFile(Sender: TObject);
-						procedure SelectMidiOutFile(Sender: TObject);
-						procedure ButtonTextBoxInClick(Sender: TObject);
+            procedure FoldPosCheck(Sender: TObject);
+            procedure MenuHideTextBoxClick(Sender: TObject);
+            procedure MenuItemTextBoxClick(Sender: TObject);
+            procedure MenuItemConvertClick(Sender: TObject);
+            procedure MenuItemOpenClick(Sender: TObject);
+            procedure MenuItemSaveAsClick(Sender: TObject);
+            procedure SelectMidiInFile(Sender: TObject);
+            procedure SelectMidiOutFile(Sender: TObject);
+            procedure ButtonTextBoxInClick(Sender: TObject);
             procedure ButtonTextBoxOutClick(Sender: TObject);
-						procedure ShowTextBox(Sender: TObject);
+            procedure ShowTextBox(Sender: TObject);
             procedure SwitchPage1(Sender: TObject);
-						procedure SwitchPage2(Sender: TObject);
+            procedure SwitchPage2(Sender: TObject);
             procedure FormCreate(Sender: TObject);
-						procedure SelectTextInFile(Sender: TObject);
+            procedure SelectTextInFile(Sender: TObject);
             procedure SelectTextOutFile(Sender: TObject);
 
       private
@@ -143,12 +143,12 @@ begin
   begin
     Form1.ButtonConvert1.Enabled := True;
     Form1.MenuItemConvert.Enabled := True
-	end
-	else
+    end
+    else
   begin
     Form1.ButtonConvert1.Enabled := False;
     Form1.MenuItemConvert.Enabled := False
-	end;
+    end;
 end;
 
 
@@ -159,12 +159,12 @@ begin
   begin
     Form1.ButtonConvert2.Enabled := True;
     Form1.MenuItemConvert.Enabled := True
-	end
-	else
+    end
+    else
   begin
     Form1.ButtonConvert2.Enabled := False;
     Form1.MenuItemConvert.Enabled := False
-	end;
+    end;
 end;
 
 
@@ -192,15 +192,15 @@ begin
       // Check and read stderr
       if StderrStream <> nil then
       begin
-				AvailableBytes := proc.Stderr.NumBytesAvailable;
-		    if AvailableBytes > 0 then
-		    begin
-		      BytesRead := proc.Stderr.Read(Buffer, Min(BUF_SIZE, AvailableBytes));
-		      StderrStream.Write(Buffer, BytesRead);
-		    end;
- 			end;
-		end;
-		Sleep(10);
+                AvailableBytes := proc.Stderr.NumBytesAvailable;
+            if AvailableBytes > 0 then
+            begin
+              BytesRead := proc.Stderr.Read(Buffer, Min(BUF_SIZE, AvailableBytes));
+              StderrStream.Write(Buffer, BytesRead);
+            end;
+            end;
+        end;
+        Sleep(10);
 end;
 
 
@@ -212,7 +212,7 @@ begin
     begin
       Form1.FPosWarningBox.Caption := 'Position must be a number between 10 and 9999!';
       Form1.FPosWarningBox.Visible := True;
-		end;
+        end;
 end;
 
 
@@ -448,11 +448,11 @@ begin
         if (proc.Input <> nil) then
           fpClose(proc.Input.Handle);
       {$ENDIF}
-		end;
+        end;
 
     //bwait := proc.WaitOnExit;
 
-		StdoutStream := TMemoryStream.Create;
+        StdoutStream := TMemoryStream.Create;
     ProcessOutput(proc, StdoutStream, nil);
 
     // Process Stderr/Stdout
@@ -497,7 +497,7 @@ begin
     begin
       FPosValid := True;
       FoldPos := LText;
-  	end;
+    end;
   FPosWarning;
   CheckMF2TConvert;
 end;
@@ -552,7 +552,7 @@ procedure LoadPage1;   { Midi To Text }
 begin
   if Form1.Notebook1.PageIndex <> 0 then
   begin
-  	MidiFile := '';
+    MidiFile := '';
     TextFile := '';
     TextStdInOut := False;
     FPosValid := True;
@@ -564,7 +564,7 @@ begin
     Form1.MenuItemSaveAs.Caption := 'Select Output Text File';
     Form1.MenuItemTextBox.Caption := 'Output To TextBox';
     Form1.MenuItemTextBox.checked := False;
-	end;
+    end;
   Form1.Notebook1.PageIndex := 0;
   Form1.FPosWarningBox.Visible := False;
   TextToMidi := False;
@@ -576,7 +576,7 @@ procedure LoadPage2;   { Text To Midi }
 begin
   if Form1.Notebook1.PageIndex <> 1 then
   begin
-  	MidiFile := '';
+    MidiFile := '';
     TextFile := '';
     TextStdInOut := False;
     Form1.ButtonConvert2.Enabled := False;
@@ -587,7 +587,7 @@ begin
     Form1.MenuItemSaveAs.Caption := 'Select Output Midi File';
     Form1.MenuItemTextBox.Caption := 'Input From TextBox';
     Form1.MenuItemTextBox.checked := False;
-	end;
+    end;
   Form1.Notebook1.PageIndex := 1;
   TextToMidi := True;
   ClearStatus;
