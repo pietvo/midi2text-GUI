@@ -466,6 +466,8 @@ end;
 
 procedure TForm2.TextBoxSaveAs(Sender: TObject);
 begin
+  if savedFileName <> '' then
+    SaveDialog1.FileName := savedFileName;
   SaveDialog1.Filter :=
       'Text Files (*.txt; *.text)|*.txt; *.text|All Files (*.*)|*.*';
   if SaveDialog1.Execute then
