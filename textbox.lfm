@@ -115,6 +115,7 @@ object Form2: TForm2
       Anchors = [akTop, akRight]
       Caption = '❌'
       Font.Color = clRed
+      Font.Height = -11
       ParentFont = False
       TabOrder = 0
       OnClick = ButtonCloseFindClick
