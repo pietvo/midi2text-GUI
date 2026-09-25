@@ -66,6 +66,7 @@ type
             LabelMidiOut: TLabel;
             MainMenu1: TMainMenu;
             MenuFile: TMenuItem;
+            MenuItemQuit: TMenuItem;
             MenuShowTextBox: TMenuItem;
             MenuHideTextBox: TMenuItem;
             Separator2: TMenuItem;
@@ -83,12 +84,15 @@ type
             Page1: TPage;
             Page2: TPage;
             SaveDialog1: TSaveDialog;
+            Separator3: TMenuItem;
             StatusBar1: TStatusBar;
             procedure ButtonConvert1Click(Sender: TObject);
             procedure ButtonConvert2Click(Sender: TObject);
             procedure FoldPosCheck(Sender: TObject);
             procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+            procedure FormShow(Sender: TObject);
             procedure MenuHideTextBoxClick(Sender: TObject);
+            procedure MenuItemQuitClick(Sender: TObject);
             procedure MenuItemTextBoxClick(Sender: TObject);
             procedure MenuItemConvertClick(Sender: TObject);
             procedure MenuItemOpenClick(Sender: TObject);
@@ -509,10 +513,32 @@ begin
       Form2.FormCloseQuery(Sender, CanClose);
 end;
 
+procedure TForm1.FormShow(Sender: TObject);
+var
+  AppMenu: TMenuItem;
+begin
+  {$IFDEF DARWIN}
+    // On macOS, "Quit" is under the App menu.
+    // Remove the "File -> Quit" item and the separator above.
+    MenuFile.Remove(Separator3);
+    MenuFile.Remove(MenuItemQuit);
+    // Create Application menu
+    AppMenu := TMenuItem.Create(Self);
+    AppMenu.Caption := #$EF#$A3#$BF;
+    MainMenu1.Items.Insert(0, AppMenu);
+  {$ENDIF}
+end;
+
 
 procedure TForm1.MenuHideTextBoxClick(Sender: TObject);
 begin
   Form2.Hide;
+end;
+
+
+procedure TForm1.MenuItemQuitClick(Sender: TObject);
+begin
+      Self.Close;
 end;
 
 
@@ -620,9 +646,7 @@ begin
 end;
 
 
-
 initialization
-
 
 end.
 

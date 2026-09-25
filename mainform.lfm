@@ -11,6 +11,7 @@ object Form1: TForm1
   Position = poScreenCenter
   LCLVersion = '4.99.0.0'
   OnCloseQuery = FormCloseQuery
+  OnShow = FormShow
   object Notebook1: TNotebook
     Left = 0
     Height = 479
@@ -1080,6 +1081,13 @@ object Form1: TForm1
         Caption = 'Convert'
         Enabled = False
         OnClick = MenuItemConvertClick
+      end
+      object Separator3: TMenuItem
+        Caption = '-'
+      end
+      object MenuItemQuit: TMenuItem
+        Caption = '&Quit'
+        OnClick = MenuItemQuitClick
       end
     end
     object MenuWindow: TMenuItem
