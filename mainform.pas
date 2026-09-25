@@ -87,6 +87,7 @@ type
             procedure ButtonConvert1Click(Sender: TObject);
             procedure ButtonConvert2Click(Sender: TObject);
             procedure FoldPosCheck(Sender: TObject);
+            procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
             procedure MenuHideTextBoxClick(Sender: TObject);
             procedure MenuItemTextBoxClick(Sender: TObject);
             procedure MenuItemConvertClick(Sender: TObject);
@@ -501,6 +502,13 @@ begin
   FPosWarning;
   CheckMF2TConvert;
 end;
+
+
+procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+      Form2.FormCloseQuery(Sender, CanClose);
+end;
+
 
 procedure TForm1.MenuHideTextBoxClick(Sender: TObject);
 begin

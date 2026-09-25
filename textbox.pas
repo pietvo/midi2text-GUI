@@ -89,6 +89,7 @@ type
            procedure actReplaceExecute(Sender: TObject);
            procedure actSearchFindExecute(Sender: TObject);
            procedure ButtonCloseFindClick(Sender: TObject);
+		   procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
            procedure FormCreate(Sender: TObject);
            procedure SynEdit1Change(Sender: TObject);
            procedure TextBoxOpen(Sender: TObject);
@@ -107,7 +108,6 @@ type
            validMidiText: Boolean;
            CallBackProc: procedure;
            procedure setText(stream: TStream);
-
 
       end;
 
@@ -499,6 +499,41 @@ begin
     SetFileName(SaveDialog1.Filename);
     TextBoxSave(Sender);
     end;
+end;
+
+
+// This is in fact called when Form1 will be closed
+
+procedure TForm2.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+var
+  Response: Integer;
+begin
+  if SynEdit1.Modified then
+  begin
+    Response := MessageDlg('Unsaved Changes',
+                           'The text has been modified. Do you want to save?',
+                           mtConfirmation, [mbYes, mbNo, mbCancel], 0);
+
+    if Response = mrYes then
+    begin
+      // Start the Save As dialog
+      Form2.TextBoxSaveAs(Sender);
+      // If successful, allow close
+      CanClose := not SynEdit1.Modified;
+    end
+    else if Response = mrNo then
+    begin
+      CanClose := True; // Discard changes and close
+    end
+    else
+    begin
+      CanClose := False; // Cancel closing the app
+    end;
+  end
+  else
+  begin
+    CanClose := True; // No modifications, safe to close
+  end;
 end;
 
 end.
