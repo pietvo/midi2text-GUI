@@ -126,6 +126,10 @@ Uses MainForm;
 
 {$R *.lfm}
 
+{
+  This method can be used to load the text of the TextBox from an
+  external TStream, for example the standard output of an external command.
+}
 
 procedure TForm2.setText(stream: TStream);
 begin

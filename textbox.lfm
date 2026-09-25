@@ -401,6 +401,7 @@ object Form2: TForm2
     object actReplaceAll: TAction
       Caption = 'Replace All'
       OnExecute = actReplaceAllExecute
+      OnUpdate = actActions1Update
     end
   end
 end
