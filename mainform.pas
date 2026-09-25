@@ -9,7 +9,7 @@ uses
        BaseUnix, // Required for fpClose
       {$ENDIF}
       Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-			DBCtrls, TextBox, Process, LCLType, Menus, ComCtrls, Math;
+			TextBox, Process, LCLType, Menus, ComCtrls, Math;
 
 type
 
