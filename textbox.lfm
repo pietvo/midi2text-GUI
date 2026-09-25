@@ -334,35 +334,30 @@ object Form2: TForm2
       Category = 'Edit'
       Caption = 'Cut'
       Hint = 'Cut'
-      OnExecute = actEditCutExecute
       OnUpdate = actActions1Update
     end
     object actEditCopy: TEditCopy
       Category = 'Edit'
       Caption = 'Copy'
       Hint = 'Copy'
-      OnExecute = actEditCopyExecute
       OnUpdate = actActions1Update
     end
     object actEditPaste: TEditPaste
       Category = 'Edit'
       Caption = 'Paste'
       Hint = 'Paste'
-      OnExecute = actEditPasteExecute
       OnUpdate = actActions1Update
     end
     object actEditSelectAll: TEditSelectAll
       Category = 'Edit'
       Caption = 'Select All'
       Hint = 'Select All'
-      OnExecute = actEditSelectAllExecute
       OnUpdate = actActions1Update
     end
     object actEditUndo: TEditUndo
       Category = 'Edit'
       Caption = 'Undo'
       Hint = 'Undo'
-      OnExecute = actEditUndoExecute
       OnUpdate = actActions1Update
     end
     object actEditRedo: TAction

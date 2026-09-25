@@ -81,12 +81,7 @@ type
            Separator5: TMenuItem;
            SynEdit1: TSynEdit;
            procedure actActions1Update(Sender: TObject);
-           procedure actEditCutExecute(Sender: TObject);
-           procedure actEditPasteExecute(Sender: TObject);
            procedure actEditRedoExecute(Sender: TObject);
-           procedure actEditSelectAllExecute(Sender: TObject);
-           procedure actEditUndoExecute(Sender: TObject);
-           procedure actEditCopyExecute(Sender: TObject);
            procedure actFindNextExecute(Sender: TObject);
            procedure actFindPrevExecute(Sender: TObject);
            procedure actReplaceAllExecute(Sender: TObject);
@@ -295,12 +290,6 @@ begin
 end;
 
 
-procedure TForm2.actEditCutExecute(Sender: TObject);
-begin
-  SynEdit1.CommandProcessor(ecCut, '', nil);
-end;
-
-
 procedure TForm2.actActions1Update(Sender: TObject);
 begin
   actEditUndo.Enabled := SynEdit1.CanUndo;
@@ -315,33 +304,9 @@ begin
 end;
 
 
-procedure TForm2.actEditPasteExecute(Sender: TObject);
-begin
-  SynEdit1.CommandProcessor(ecPaste, '', nil);
-end;
-
-
 procedure TForm2.actEditRedoExecute(Sender: TObject);
 begin
   SynEdit1.Redo;
-end;
-
-
-procedure TForm2.actEditSelectAllExecute(Sender: TObject);
-begin
-  SynEdit1.CommandProcessor(ecSelectAll, '', nil);
-end;
-
-
-procedure TForm2.actEditUndoExecute(Sender: TObject);
-begin
-  SynEdit1.Undo;
-end;
-
-
-procedure TForm2.actEditCopyExecute(Sender: TObject);
-begin
-  SynEdit1.CommandProcessor(ecCopy, '', nil);
 end;
 
 
