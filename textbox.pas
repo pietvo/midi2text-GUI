@@ -259,8 +259,9 @@ begin
         begin
           // Remove undesired Ctrl+arrow shortcuts
           // these could conflict with MacOS keys
-          // Remove Ctrl-N because we need it below
-         if ((Key in [VK_N, VK_LEFT, VK_RIGHT, VK_UP, VK_DOWN]) and (ssCtrl in Shift))
+          // Remove Ctrl-A and Ctrl-N because we need these below
+         if ((Key in [VK_A, VK_N, VK_LEFT, VK_RIGHT, VK_UP, VK_DOWN]) and
+             (ssCtrl in Shift))
          // Remove column select mode
             or (Command in [ecNormalSelect, ecColumnSelect, ecLineSelect]) then
             Delete(i);
