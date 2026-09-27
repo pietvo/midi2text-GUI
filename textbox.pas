@@ -100,6 +100,7 @@ type
            procedure SetMemoLabel;
            procedure HideMemoLabel;
            procedure DoSearch(forward: TSynSearchOptions; replace: SRType);
+           procedure SetUp(newtext: Boolean);
 
       private
            savedFileName: string;
@@ -136,14 +137,26 @@ procedure TForm2.setText(stream: TStream);
 begin
   SynEdit1.ScrollBars := ssBoth;
   SynEdit1.Lines.LoadFromStream(stream);
+  SetUp(True);
+end;
+
+
+{ This procedure initialzes the window after loading an external text }
+
+procedure TForm2.SetUp(newtext: Boolean);
+// newtext indicates whether the input comes from an unknow source
+// (i.e. not from an actual file).
+// In that case the filename is cleared and Modified is set.
+begin
   // We have to manipulate the ScrollBars this way to prevent a problem
+  // that appears if we set ssAutoBoth before.
+  //  Scrollbars should be set to ssBoth before loading the contents.
   SynEdit1.ScrollBars := ssAutoBoth;
   SynEdit1.Invalidate; // Force UI synchronization
-  SynEdit1.Modified := True;
+  SynEdit1.Modified := newtext;
+  if newtext then
+    ClearFileName;
   SynEdit1Change(SynEdit1);
-  ClearFileName;
-  if Assigned(SynEdit1.OnChange) then
-    SynEdit1.OnChange(SynEdit1);
 end;
 
 
@@ -465,14 +478,7 @@ begin
     // We have to manipulate the ScrollBars this way to prevent a problem
     SynEdit1.ScrollBars := ssBoth;
     SynEdit1.Lines.LoadFromFile(savedFileName);
-    SynEdit1.ScrollBars := ssAutoBoth;
-    SynEdit1.Invalidate; // Force UI synchronization
-    SynEdit1.Modified := False;
-    SynEdit1Change(Sender);
-
-    { primitive check if it is a midi text }
-    if Assigned(SynEdit1.OnChange) then
-      SynEdit1.OnChange(SynEdit1);
+    SetUp(False);
     SetMemoLabel;
   end
 end;
