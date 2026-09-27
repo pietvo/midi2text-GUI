@@ -181,11 +181,12 @@ object Form2: TForm2
       TabOrder = 6
     end
     object CheckBoxWW: TCheckBox
+      AnchorSideTop.Control = CheckBoxMC
       Left = 10
       Height = 18
-      Top = 62
+      Top = 64
       Width = 97
-      Anchors = []
+      Anchors = [akTop]
       Caption = 'whole words'
       TabOrder = 7
     end
@@ -204,6 +205,7 @@ object Form2: TForm2
     object CheckBoxRE: TCheckBox
       AnchorSideLeft.Control = CheckBoxTOP
       AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = CheckBoxMC
       AnchorSideRight.Side = asrBottom
       Left = 286
       Height = 18
@@ -218,11 +220,12 @@ object Form2: TForm2
     object CheckBoxTOP: TCheckBox
       AnchorSideLeft.Control = CheckBoxMC
       AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = CheckBoxMC
       Left = 207
       Height = 18
-      Top = 62
+      Top = 64
       Width = 75
-      Anchors = []
+      Anchors = [akTop]
       BorderSpacing.Left = 5
       Caption = 'from top'
       TabOrder = 10
