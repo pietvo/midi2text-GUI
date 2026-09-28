@@ -85,8 +85,8 @@ object Form2: TForm2
     ChildSizing.HorizontalSpacing = 5
     ChildSizing.EnlargeHorizontal = crsHomogenousSpaceResize
     ChildSizing.ControlsPerLine = 4
-    ClientHeight = 92
-    ClientWidth = 405
+    ClientHeight = 94
+    ClientWidth = 407
     TabOrder = 4
     Visible = False
     object LabelFind: TLabel

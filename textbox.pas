@@ -101,6 +101,7 @@ type
            procedure HideMemoLabel;
            procedure DoSearch(forward: TSynSearchOptions; replace: SRType);
            procedure SetUp(newtext: Boolean);
+           function SaveCheck: Boolean;
 
       private
            savedFileName: string;
@@ -468,18 +469,57 @@ begin
 end;
 
 
+{ This function offers to save the text if there are unsaved changes.
+  The result indicates if it is safe to continue. }
+
+function TForm2.SaveCheck: Boolean;
+var
+  Response: Integer;
+begin
+  if SynEdit1.Modified then
+  begin
+    Response := MessageDlg('Unsaved Changes',
+                           'The text has unsaved changes. Do you want to save?',
+                           mtConfirmation, [mbYes, mbNo, mbCancel], 0);
+
+    if Response = mrYes then
+    begin
+      // Start the Save As dialog
+      TextBoxSaveAs(SynEdit1);
+      // If successful, allow operation
+      Result := not SynEdit1.Modified;
+    end
+    else if Response = mrNo then
+    begin
+      Result := True; // Discard changes and proceed
+    end
+    else
+    begin
+      Result := False; // Cancel the operation
+    end;
+  end
+  else
+  begin
+    Result := True; // No modifications, safe to proceed
+  end;
+end;
+
+
 procedure TForm2.TextBoxOpen(Sender: TObject);
 begin
-  OpenDialog1.Filter :=
-      'Text Files (*.txt; *.text)|*.txt; *.text|All Files (*.*)|*.*';
-  if OpenDialog1.Execute then
+  if SaveCheck then
   begin
-    SetFileName(OpenDialog1.Filename);
-    // We have to manipulate the ScrollBars this way to prevent a problem
-    SynEdit1.ScrollBars := ssBoth;
-    SynEdit1.Lines.LoadFromFile(savedFileName);
-    SetUp(False);
-    SetMemoLabel;
+    OpenDialog1.Filter :=
+        'Text Files (*.txt; *.text)|*.txt; *.text|All Files (*.*)|*.*';
+    if OpenDialog1.Execute then
+    begin
+      SetFileName(OpenDialog1.Filename);
+      // We have to manipulate the ScrollBars this way to prevent a problem
+      SynEdit1.ScrollBars := ssBoth;
+      SynEdit1.Lines.LoadFromFile(savedFileName);
+      SetUp(False);
+      SetMemoLabel;
+    end
   end
 end;
 
@@ -512,35 +552,8 @@ end;
 // This is in fact called when Form1 will be closed
 
 procedure TForm2.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-var
-  Response: Integer;
 begin
-  if SynEdit1.Modified then
-  begin
-    Response := MessageDlg('Unsaved Changes',
-                           'The text has been modified. Do you want to save?',
-                           mtConfirmation, [mbYes, mbNo, mbCancel], 0);
-
-    if Response = mrYes then
-    begin
-      // Start the Save As dialog
-      Form2.TextBoxSaveAs(Sender);
-      // If successful, allow close
-      CanClose := not SynEdit1.Modified;
-    end
-    else if Response = mrNo then
-    begin
-      CanClose := True; // Discard changes and close
-    end
-    else
-    begin
-      CanClose := False; // Cancel closing the app
-    end;
-  end
-  else
-  begin
-    CanClose := True; // No modifications, safe to close
-  end;
+  CanClose := SaveCheck;
 end;
 
 end.
