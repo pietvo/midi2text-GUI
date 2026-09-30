@@ -44,7 +44,7 @@ type
            CheckBoxRE: TCheckBox;
            EditFind: TEdit;
            EditRepl: TEdit;
-		   LabelModified: TLabel;
+           LabelModified: TLabel;
            LabelFind: TLabel;
            LabelRepl: TLabel;
            MemoLabel: TLabel;
@@ -89,7 +89,7 @@ type
            procedure actReplaceExecute(Sender: TObject);
            procedure actSearchFindExecute(Sender: TObject);
            procedure ButtonCloseFindClick(Sender: TObject);
-		   procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+           procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
            procedure FormCreate(Sender: TObject);
            procedure SynEdit1Change(Sender: TObject);
            procedure TextBoxOpen(Sender: TObject);
@@ -105,6 +105,10 @@ type
 
       private
            savedFileName: string;
+           FindActive: Boolean;
+           FirstSearch: Boolean;
+           SearchDirection: TSynSearchOptions;
+           SearchFound: Boolean;
 
       public
            validMidiText: Boolean;
@@ -118,10 +122,6 @@ const
 
 var
     Form2: TForm2;
-    FindActive: Boolean = False;
-    FirstSearch: Boolean;
-    SearchDirection: TSynSearchOptions;
-    SearchFound: Boolean;
 
 implementation
 
@@ -186,7 +186,7 @@ end;
 procedure TForm2.SetMemoLabel;
 begin
   if FindActive then Exit;
-  if Form2.validMidiText then
+  if validMidiText then
   begin
     HideMemoLabel;
     SynEdit1.Top := MemoTop;
@@ -214,9 +214,9 @@ var
   validMidi: Boolean;
 begin
   validMidi := False;
-  for i:=0 to Form2.SynEdit1.Lines.Count-1 do
+  for i:=0 to SynEdit1.Lines.Count-1 do
     begin
-       line := Trim(Form2.SynEdit1.Lines[i]);
+       line := Trim(SynEdit1.Lines[i]);
          // Skip blank lines and comment;
          // check first non-blank, non-comment line
          if (line <> '') and (line[1] <> '#') then
@@ -225,7 +225,7 @@ begin
            Break;
          end
     end;
-  Form2.validMidiText := validMidi;
+  validMidiText := validMidi;
   if validMidi and Assigned(CallBackProc) then
     CallBackProc;
   SetMemoLabel;
@@ -234,7 +234,7 @@ begin
   begin
     LabelModified.Font.Color := clRed;
     LabelModified.Font.Size := 24;
-        LabelModified.Caption := ModMark;
+    LabelModified.Caption := ModMark;
   end
   else
   begin
@@ -260,6 +260,7 @@ begin
   // Define the OnChange handler of SynEdit1
   SynEdit1.OnChange := @SynEdit1Change;
   ClearFileName;
+  FindActive:= False;
 
   // Redefine Keys for MacOS
 
@@ -333,7 +334,7 @@ begin
   actEditCopy.Enabled := SynEdit1.SelText <> '';
   actEditPaste.Enabled := SynEdit1.CanPaste;
   actEditSelectAll.Enabled := SynEdit1.Text <> '';
-  actFileSave.Enabled := (Form2.savedFileName <> '') and (validMidiText);
+  actFileSave.Enabled := (savedFileName <> '') and (validMidiText);
   actFileSaveAs.Enabled := validMidiText;
 end;
 
@@ -531,7 +532,7 @@ begin
     SynEdit1.Lines.SaveToFile(savedFileName);
     SynEdit1.Modified := False;
     SynEdit1Change(Sender);
-	end;
+    end;
 end;
 
 
