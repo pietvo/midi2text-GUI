@@ -1,0 +1,10 @@
+object HelpWindow: THelpWindow
+  Left = 384
+  Height = 752
+  Top = 1110
+  Width = 750
+  Caption = 'Midi2Text Help'
+  LCLVersion = '4.99.0.0'
+  OnClose = FormClose
+  OnCreate = FormCreate
+end

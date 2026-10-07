@@ -9,7 +9,7 @@ uses
        BaseUnix, // Required for fpClose
       {$ENDIF}
       Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-            TextBox, Process, LCLType, Menus, ComCtrls, Math;
+            HelpPanel, TextBox, Process, LCLType, Menus, ComCtrls, Math;
 
 type
 
@@ -66,6 +66,7 @@ type
             LabelMidiOut: TLabel;
             MainMenu1: TMainMenu;
             MenuFile: TMenuItem;
+            MenuItemHelp: TMenuItem;
             MenuItemQuit: TMenuItem;
             MenuShowTextBox: TMenuItem;
             MenuHideTextBox: TMenuItem;
@@ -92,6 +93,7 @@ type
             procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
             procedure FormShow(Sender: TObject);
             procedure MenuHideTextBoxClick(Sender: TObject);
+            procedure MenuItemHelpClick(Sender: TObject);
             procedure MenuItemQuitClick(Sender: TObject);
             procedure MenuItemTextBoxClick(Sender: TObject);
             procedure MenuItemConvertClick(Sender: TObject);
@@ -533,6 +535,15 @@ end;
 procedure TForm1.MenuHideTextBoxClick(Sender: TObject);
 begin
   Form2.Hide;
+end;
+
+procedure TForm1.MenuItemHelpClick(Sender: TObject);
+begin
+  OpenHelp;
+  {
+if not Assigned(HelpWindow) then
+  Application.CreateForm(THelpWindow, HelpWindow);
+  HelpWindow.Show();   }
 end;
 
 

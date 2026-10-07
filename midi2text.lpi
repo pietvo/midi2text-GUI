@@ -25,6 +25,9 @@
     </RunParams>
     <RequiredPackages>
       <Item>
+        <PackageName Value="TurboPowerIPro"/>
+      </Item>
+      <Item>
         <PackageName Value="SynEditDsgn"/>
       </Item>
       <Item>
@@ -54,6 +57,14 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="TextBox"/>
+      </Unit>
+      <Unit>
+        <Filename Value="helppanel.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="HelpWindow"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="HelpPanel"/>
       </Unit>
     </Units>
   </ProjectOptions>
